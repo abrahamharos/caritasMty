@@ -15,4 +15,8 @@ router.get('/register', async function(req,res){
   res.render('register', {})
 });
 
+router.get('/api/tickets', async function(req,res){
+  //Ticket.findAll({  
+
+});
 module.exports = router;
