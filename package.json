@@ -1,5 +1,5 @@
 {
-  "name": "caritasMty",
+  "name": "caritas-mty",
   "version": "1.0.0",
   "description": "CaritasMTY",
   "main": "index.js",
@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node ./app.js",
     "dev": "nodemon ./app.js"
-
   },
   "repository": {
     "type": "git",
