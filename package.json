@@ -1,0 +1,25 @@
+{
+  "name": "caritasMty",
+  "version": "1.0.0",
+  "description": "CaritasMTY",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run":  "node ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abrahamharos/caritasMty.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abrahamharos/caritasMty/issues"
+  },
+  "homepage": "https://github.com/abrahamharos/caritasMty#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
