@@ -1,0 +1,60 @@
+<%- include ("./partials/_header") %>
+    <%- include ("./partials/_navbar") %>
+
+        <div class="container mt-5">
+            <p class="h1 mb-5">Mis Tickets</p>
+            <!-- TODO: GET DEPARTMENTS-->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Asunto</th>
+                        <th scope="col" class="text-center">Estado</th>
+                        <th scope="col" class="text-center">Ver</th>
+                        <th scope="col" class="text-center">Editar</th>
+                        <th scope="col" class="text-center">Borrar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>26-11-2021</td>
+                        <td>Mouse roto</td>
+                        <td class="text-center"><span class="badge badge-success">Completado</span></td>
+                        <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        <td class="text-center"><a href="/editTicket?id=0"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteTicket?id=0"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>26-11-2021</td>
+                        <td>Mouse roto</td>
+                        <td class="text-center"><span class="badge badge-warning">Pendiente</span></td>
+                        <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        <td class="text-center"><a href="/editTicket?id=0"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteTicket?id=0"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>26-11-2021</td>
+                        <td>Mouse roto</td>
+                        <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
+                        <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        <td class="text-center"><a href="/editTicket?id=0"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteTicket?id=0"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>26-11-2021</td>
+                        <td>Mouse roto</td>
+                        <td class="text-center"><span class="badge badge-danger">Cancelado</span></td>
+                        <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        <td class="text-center"><a href="/editTicket?id=0"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteTicket?id=0"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <%- include ("./partials/_footer") %>

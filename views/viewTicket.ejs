@@ -1,0 +1,41 @@
+<%- include ("./partials/_header") %>
+<%- include ("./partials/_navbar") %>
+
+<div class="container py-5 mb-5">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5">
+
+            <p class="h1 mb-5">Ticket ###</p>
+            <p class="h2 mb-3">Asunto</p>
+            <p class="h4 mb-3"><b>Fecha: </b>26-11-2021</p>
+            <p class="h4 mb-3"><b>Prioridad: </b>0</p>
+            <p class="h4 mb-3"><b>Estado: </b><span class="badge badge-warning">Pendiente</span></p>
+            <p class="h4 mb-3"><b>Departamento asignado: </b>departamento 0</p>
+            <p class="h4 mb-5"><b>Nombre empleado: </b>Nombre</p>
+            <p><b>Descripción:</b></p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat quae voluptatem commodi, inventore optio assumenda et consectetur molestias earum? Illo ut quaerat neque odio ipsa sint consectetur necessitatibus repellendus earum.</p>
+            <p><b>Evidencia:</b></p>
+            <p>TODO: Show evidence images</p>
+            <hr class="my-5">
+            <p class="h4 mb-4">Cambiar estado</p>
+            <form action="/updateStatus" method="POST">
+                <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="status">Seleccione el estado</label>
+                    <select id="status" class="form-control">
+                      <option value="0">Pendiente</option>
+                      <option value="1">En progreso</option>
+                      <option value="2">Completado</option>
+                      <option value="3">Cancelado</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include ("./partials/_footer") %>

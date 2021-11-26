@@ -35,4 +35,28 @@ router.get('/editUser', async function(req,res){
   res.render('editUser', {})
 });
 
+router.get('/editTicket', async function(req,res){
+  res.render('editTicket', {})
+});
+
+router.post('/editTicket', async function(req,res){
+  res.redirect('/')
+});
+
+router.get('/misTickets', async function(req,res){
+  res.render('misTickets', {})
+});
+
+router.get('/viewTicket', async function(req,res){
+  res.render('viewTicket', {})
+});
+
+router.post('/updateStatus', async function(req,res){
+  res.redirect('/viewTickets')
+});
+
+router.get('/viewTickets', async function(req,res){
+  res.render('viewTickets', {})
+});
+
 module.exports = router;
