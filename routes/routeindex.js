@@ -15,4 +15,8 @@ router.get('/register', async function(req,res){
   res.render('register', {})
 });
 
+router.get('/crearTicket', async function(req,res){
+  res.render('crearTicket', {})
+});
+
 module.exports = router;
