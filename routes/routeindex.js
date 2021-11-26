@@ -1,8 +1,10 @@
 const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
-const Sequelize = require('sequelize');
-const User = require('../db/models/User');
+// const Sequelize = require('sequelize');
+// const User = require('../db/models/User');
+const sequelize = require('../db/index');
+const User = sequelize.models['User'];
 
 // EDUARDO
 
@@ -69,11 +71,21 @@ router.get('/departments', async function(req,res){
   res.render('departments', {})
 });
 
+router.post('/departments', async function(req,res){
+  // Se tiene que recibir el nombre del departamento y crear uno nuevo en la DB 
+  res.render('departments', {})
+});
+
 router.get('/users', async function(req,res){
   res.render('users', {})
 });
 
 router.get('/editUser', async function(req,res){
+  res.render('editUser', {})
+});
+
+router.post('/editUser', async function(req,res){
+  // Se tiene que recibir nombre, email, password y departamento y darle update en la DB
   res.render('editUser', {})
 });
 

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CaritasMTY",
   "main": "index.js",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node ./app.js",
@@ -30,6 +31,8 @@
     "tedious": "^14.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
     "nodemon": "^2.0.15"
   }
 }

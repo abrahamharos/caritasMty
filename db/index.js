@@ -1,14 +1,14 @@
-import { DataTypes, Sequelize } from 'sequelize';
-import fs from 'fs';
-import path from 'path';
-import { dbHost, dbPort, dbName, dbUser, dbPassword } from '../config';
+const Sequelize = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const db = require('../config');
 
 const basename = path.basename(module.filename);
 const modelsFolder = path.join(__dirname, '/models');
 const models = {};
 
 const sequelize = new Sequelize(
-  `mssql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`,
+  `mssql://${db.dbUser}:${db.dbPassword}@${db.dbHost}:${db.dbPort}/${db.dbName}`,
   {
     dialect: 'mssql',
     dialectOptions: {
@@ -48,4 +48,4 @@ const connectToDb = async () =>
     })
     .then(async () => sequelize.sync({ force: false }));
 
-export { connectToDb, sequelize, models };
+module.exports = { connectToDb, sequelize, models };
