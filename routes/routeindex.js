@@ -1,9 +1,10 @@
 const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
+const Sequelize = require('sequelize');
+const User = require('../db/models/User');
 
 // EDUARDO
-import models from "../db/index.js"
 
 router.get('/', async function(req,res){
   res.render('crearTicket', {})
@@ -14,7 +15,6 @@ router.get('/login', async function(req,res){
 });
 
 router.post('/login', async function(req,res){  
-  const User = models['User'];
 
   // Validar si el usuario existe
   const user = User.findAll({
@@ -50,6 +50,19 @@ router.post('/login', async function(req,res){
 
 router.get('/register', async function(req,res){
   res.render('register', {})
+});
+
+router.post('/register', async function(req,res){
+  req.body.role = "User";
+  req.body.username = req.body.name;
+  
+  const newUser = User.create(req.body)
+  .then(function(user) {
+    user.update({
+      password: bcrypt.hashSync(user.password,10)
+    })
+    res.redirect("/")
+  })
 });
 
 router.get('/departments', async function(req,res){
