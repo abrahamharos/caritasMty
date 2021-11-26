@@ -1,0 +1,128 @@
+<%- include ("./partials/_header") %>
+    <%- include ("./partials/_navbar") %>
+
+        <div class="container mt-5">
+            <p>*Mostrar solo los tickets del departamento del user logeado*</p>
+            <p class="h1 mb-10">Lista de tickets</p>
+
+            <div class="mb-5">
+                <p class="h2">Pendientes</p>
+                <table class="table table-striped" id="table-1">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Asunto</th>
+                            <th scope="col" class="text-center">Estado</th>
+                            <th scope="col" class="text-center">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto</td>
+                            <td class="text-center"><span class="badge badge-warning">Pendiente</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-5">
+                <p class="h2">En progreso</p>
+                <table class="table table-striped" id="table-2">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Asunto</th>
+                            <th scope="col" class="text-center">Estado</th>
+                            <th scope="col" class="text-center">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto</td>
+                            <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto</td>
+                            <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-5">
+                <p class="h2">Cancelados</p>
+                <table class="table table-striped" id="table-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Asunto</th>
+                            <th scope="col" class="text-center">Estado</th>
+                            <th scope="col" class="text-center">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto</td>
+                            <td class="text-center"><span class="badge badge-danger">Cancelado</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-5">
+                <p class="h2">Completados</p>
+                <table class="table table-striped" id="table-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Asunto</th>
+                            <th scope="col" class="text-center">Estado</th>
+                            <th scope="col" class="text-center">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto</td>
+                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto 2</td>
+                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>26-11-2021</td>
+                            <td>Mouse roto 3</td>
+                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
+                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr class="mb-5">
+        </div>
+
+        <%- include ("./partials/_footer") %>
+        <%- include ("./partials/tables") %>

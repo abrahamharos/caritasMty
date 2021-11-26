@@ -1,0 +1,51 @@
+<%- include ("./partials/_header") %>
+  <%- include ("./partials/_navbar") %>
+
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+
+              <p class="h1 mb-5">Editar ticket</p>
+              <form action="/editTicket" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="subject">Asunto</label>
+                  <input type="text" class="form-control" id="subject" placeholder="Ejemplo: Mouse roto" required>
+                </div>
+                <div class="form-group">
+                  <label for="department">Departamento correspondiente</label>
+                  <!-- TODO: Cargar department id y department name -->
+                  <select id="department" class="form-control">
+                    <option value="0">departamento 0</option>
+                    <option value="1">departamento 1</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="description">Descripción</label>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Describre el problema claramente aquí" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="evidence">Adjunta evidencia</label>
+                  <input type="file" class="form-control-file" id="evidence">
+                </div>
+                <hr class="my-4">
+                <div class="form-group">
+                  <label for="priority">Prioridad (0 más baja y 4 la más alta)</label>
+                  <select id="priority" class="form-control">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include ("./partials/_footer") %>

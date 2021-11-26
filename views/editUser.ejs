@@ -1,24 +1,15 @@
 <%- include ("./partials/_header") %>
+<%- include ("./partials/_navbar") %>
 
-  <section class="vh-100 gradient-custom" style="background-color: #28869e;">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card bg-dark text-white" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
+<div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-12">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5">
 
-              <div class="container">
-                <a>
-                  <img src="/images/logo.png" height="50" alt="">
-                </a>
-              </div>
-              <div class="mt-md-4 pb-5">
-
-                <p class="h1 font-weight-bold">Registrate</p>
-                <p class="text-white-50 mb-5">Introduce tu email y contraseña!</p>
-                
-                <form action="/register" method="POST">
-                  <div class="form-outline form-white mb-4">
+            <p class="h1 mb-5">Editar Usuario</p>
+            <form action="/editUser" method="POST" enctype="multipart/form-data">
+                <div class="form-outline form-white mb-4">
                     <input type="text" id="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
                     <label class="form-label" for="name">Nombre</label>
                   </div>
@@ -41,20 +32,13 @@
                     </select>
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>
-                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Registrate</button>
-                </form>
-              </div>
 
-              <div>
-                <p class="mb-0">Ya estás registrado? <a href="/login" class="text-white-50 fw-bold">Inicia sesión</a></p>
-              </div>
-
-            </div>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar cambios</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-</body>
 <%- include ("./partials/_footer") %>
