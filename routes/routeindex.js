@@ -2,7 +2,7 @@ const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
 
-
+// EDUARDO
 router.get('/', async function(req,res){
   res.render('crearTicket', {})
 });
@@ -19,10 +19,6 @@ router.get('/register', async function(req,res){
   res.render('register', {})
 });
 
-router.get('/crearTicket', async function(req,res){
-  res.render('crearTicket', {})
-});
-
 router.get('/departments', async function(req,res){
   res.render('departments', {})
 });
@@ -33,6 +29,11 @@ router.get('/users', async function(req,res){
 
 router.get('/editUser', async function(req,res){
   res.render('editUser', {})
+});
+
+// Mau 
+router.get('/crearTicket', async function(req,res){
+  res.render('crearTicket', {})
 });
 
 router.get('/editTicket', async function(req,res){
@@ -47,12 +48,13 @@ router.get('/misTickets', async function(req,res){
   res.render('misTickets', {})
 });
 
-router.get('/viewTicket', async function(req,res){
-  res.render('viewTicket', {})
-});
-
 router.post('/updateStatus', async function(req,res){
   res.redirect('/viewTickets')
+});
+
+// Shaar
+router.get('/viewTicket', async function(req,res){
+  res.render('viewTicket', {})
 });
 
 router.get('/viewTickets', async function(req,res){
