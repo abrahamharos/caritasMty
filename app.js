@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
-
+const dotenv = require('dotenv');
 const app = express();
 
 // connection to db
 // importing routes
 const indexRoutes = require('./routes/routeindex');
-
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 // settings
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname,'views'));

@@ -19,6 +19,12 @@ router.get('/register', async function(req,res){
   res.render('register', {})
 });
 
+
+router.get('/api/tickets', async function(req,res){
+  //Ticket.findAll({  
+
+});
+  
 router.get('/crearTicket', async function(req,res){
   res.render('crearTicket', {})
 });
@@ -58,5 +64,6 @@ router.post('/updateStatus', async function(req,res){
 router.get('/viewTickets', async function(req,res){
   res.render('viewTickets', {})
 });
+
 
 module.exports = router;
