@@ -1,0 +1,55 @@
+<%- include ("./partials/_header") %>
+  <%- include ("./partials/_navbar") %>
+
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+
+              <p class="h1 mb-5">Crear nuevo departamento</p>
+              <form action="/createDepartment" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="Nombre">Nombre del departmaneto</label>
+                  <input type="text" class="form-control" id="Nombre" placeholder="Ejemplo: Administración" required>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Crear Departamento</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <p class="h1">Lista de departamentos</p>
+      <!-- TODO: GET DEPARTMENTS-->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col" class="text-center">Borrar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Deparamento Nombre</td>
+            <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Deparamento Nombre</td>
+            <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>Deparamento Nombre</td>
+            <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <%- include ("./partials/_footer") %>
