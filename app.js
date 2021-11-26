@@ -11,6 +11,7 @@ const indexRoutes = require('./routes/routeindex');
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine', 'ejs');
+app.use(express.static('public'))
 
 // middlewares
 app.use(express.urlencoded({extended:false}));
