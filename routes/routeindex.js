@@ -1,7 +1,7 @@
 const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
-const { sequelize, Ticket } = require('../db')
+const { sequelize, Ticket, Department, User } = require('../db')
 
 // EDUARDO
 
@@ -16,14 +16,8 @@ const { sequelize, Ticket } = require('../db')
   });
 */
 
-const Sequelize = require('sequelize');
-//const User = require('../db/models/User');
-//const Department = require('../db/models/Department');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const tables = require('../db/index');
-const User = tables.User;
-const Department = tables.Department;
 const db = require('../config/index');
 const jwtSecret = db.jwtSecret;
 const verify = require("./verifyAccess")
