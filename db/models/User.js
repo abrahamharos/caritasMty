@@ -24,7 +24,8 @@ const UserModel = (sequelize, DataTypes) => {
       },
     },
     {
-      modelName: 'User',
+      timestamps: false,
+      modelName: 'User'
     }
   );
 
@@ -41,4 +42,4 @@ const UserModel = (sequelize, DataTypes) => {
   return User;
 };
 
-export default UserModel;
+module.exports = UserModel;

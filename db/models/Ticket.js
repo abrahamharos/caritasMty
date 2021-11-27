@@ -27,7 +27,8 @@ const TicketModel = (sequelize, DataTypes) => {
       }
     },
     {
-      modelName: 'Ticket',
+      timestamps: false,
+      modelName: 'Ticket'
     }
   );
 

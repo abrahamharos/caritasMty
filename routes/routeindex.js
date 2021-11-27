@@ -1,6 +1,10 @@
 const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
+=======
+const { sequelize, Ticket, User } = require('../db')
+>>>>>>> e426652 (user and ticket corected models)
 
 
 router.get('/', async function(req,res){
@@ -39,6 +43,42 @@ router.get('/users', async function(req,res){
 
 router.get('/editUser', async function(req,res){
   res.render('editUser', {})
+});
+
+// Mau 
+router.post('/crearTicket', async function(req,res){
+  
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  };
+  console.log("reqbody: "+req.body);
+  const newTicket = await Ticket.create({
+    subject: req.body.subject,
+    userId: req.body.userId,
+    departmentId: req.body.departmentId,
+    description: req.body.description,
+    evidence: req.body.evidence,
+    priority: req.body.priority,
+    extras: req.body.extras,
+    status: req.body.status
+  })
+  .then(function(newTicket){
+    res.json({
+      "success": 'true',
+      "ticket": newTicket
+    });
+    res.render('crearTicket', {newTicket});
+  })
+  .catch(function(err){
+    res.json({
+      "success": 'false',
+      "error": err
+    });
+  });
+  
 });
 
 router.get('/editTicket', async function(req,res){
