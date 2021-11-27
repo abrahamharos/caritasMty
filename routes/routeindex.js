@@ -229,7 +229,12 @@ router.post('/updateStatus', async function(req,res){
 
 // Shaar
 router.get('/viewTicket', async function(req,res){
-  res.render('viewTicket', {})
+  const ticket = await Ticket.findByPk(req.query.id, { 
+    include: [ User, Department ], 
+    raw: true 
+  });
+  console.log(ticket);
+  res.render('viewTicket', { ticket });
 });
 
 router.get('/viewTickets', async function(req,res){
