@@ -8,6 +8,7 @@ const DepartmentModel = (sequelize, DataTypes) => {
         }
       },
       {
+        timestamps: false,
         modelName: 'Department',
       }
     );

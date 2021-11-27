@@ -84,8 +84,17 @@ router.post('/register', async function(req,res){
   })
 });
 
-router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  var departmentList = await Department.findAll();
+// router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+router.get('/departments', async function(req,res){
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  };
+
+  const departmentList = await Department.findAll();
+  console.log(departmentList);
   res.render('departments', {departmentList})
 });
 
