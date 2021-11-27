@@ -66,22 +66,25 @@ router.post('/login', async function(req,res){
   })
 });
 
+// WORKS
 router.get('/register', async function(req,res){
   var departmentList = await Department.findAll();
   res.render('register', {departmentList})
 });
 
 router.post('/register', async function(req,res){
-  req.body.role = "User";
-  req.body.username = req.body.name;
+  console.log(req.body);
+  const obj = JSON.parse(JSON.stringify(req.body));
+  console.log(obj);
   
-  const newUser = User.create(req.body)
-  .then(function(user) {
+  await User.create(obj).then(function(user) {
+    console.log('\nCreated User:', user.get({ plain: true}))});
+  /*.then(function(user) {
     user.update({
       password: bcrypt.hashSync(user.password,10)
     })
     res.redirect("/")
-  })
+  })*/
 });
 
 // WORKS
@@ -95,14 +98,12 @@ router.get('/departments', async function(req,res){
   };
 
   const departmentList = await Department.findAll();
-  console.log(departmentList);
   res.render('departments', {departmentList})
 });
 
 // WORKS
 router.post('/createDepartment', async function(req,res){
-  console.log(req.body);
-  await Department.create({ name: req.body.Nombre }).then(function(user) {
+  await Department.create(req.body).then(function(user) {
     console.log('\nCreated Department:', user.get({ plain: true}))});
   
   var departmentList = await Department.findAll();
@@ -118,9 +119,11 @@ router.get('/deleteDepartment/:name', async function(req,res){
   res.render('departments', {departmentList})
 });
 
+// WORKS
 // router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   router.get('/users', async function(req,res){
   var userList = await User.findAll();
+  console.log(userList);
   res.render('users', {userList})
 });
 
@@ -142,7 +145,7 @@ router.post('/editUser/:id', async function(req,res){
   res.render('users', {})
 });
 
-router.post('/deleteUser/:id', async function(req,res){
+router.get('/deleteUser/:id', async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
   await userToDelete.destroy();
 
