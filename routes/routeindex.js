@@ -1,14 +1,34 @@
 const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
-// const Sequelize = require('sequelize');
-// const User = require('../db/models/User');
-const sequelize = require('../db/index');
-const User = sequelize.models['User'];
 
 // EDUARDO
 
-router.get('/', async function(req,res){
+/* IMPORTANT: about routes
+  In each route, you have to include an anonymous middleware function that 
+  tells the "verify" function if the page is meant only for admins or not. You 
+  also have to call "verify" to check if the user's token is still valid.
+  Example route:
+
+  router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+    console.log('Hello, this is a test page')
+  });
+*/
+
+const Sequelize = require('sequelize');
+//const User = require('../db/models/User');
+//const Department = require('../db/models/Department');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const tables = require('../db/index');
+const User = tables.User;
+const Department = tables.Department;
+const db = require('../config/index');
+const jwtSecret = db.jwtSecret;
+const verify = require("./verifyAccess")
+
+
+router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   res.render('crearTicket', {})
 });
 
@@ -34,10 +54,10 @@ router.post('/login', async function(req,res){
         if (valid) {
           var token
           if (users[0].dataValues.role == "Administrator") {
-            token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, vSecret, {expiresIn: "1h"})
+            token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, jwtSecret, {expiresIn: "1h"})
           }
           else {
-            token = jwt.sign({id:users[0].dataValues.id, isAdministrator: false}, vSecret, {expiresIn: "1h"})
+            token = jwt.sign({id:users[0].dataValues.id, isAdministrator: false}, jwtSecret, {expiresIn: "1h"})
           }
           res.cookie("token", token, {httpOnly:true})
           res.redirect("/")
@@ -45,13 +65,15 @@ router.post('/login', async function(req,res){
       
         else {
           console.log("Password is invalid")
+          res.redirect('/login');
         }
       }
   })
 });
 
 router.get('/register', async function(req,res){
-  res.render('register', {})
+  var departmentList = await Department.findAll();
+  res.render('register', {departmentList})
 });
 
 router.post('/register', async function(req,res){
@@ -67,26 +89,57 @@ router.post('/register', async function(req,res){
   })
 });
 
-router.get('/departments', async function(req,res){
-  res.render('departments', {})
+router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  var departmentList = await Department.findAll();
+  res.render('departments', {departmentList})
 });
 
 router.post('/departments', async function(req,res){
-  // Se tiene que recibir el nombre del departamento y crear uno nuevo en la DB 
-  res.render('departments', {})
+  console.log(req.body.Nombre);
+  await Department.create({ name: req.body.Nombre }).then(function(user) {
+    console.log('\nCreated Department:', user.get({ plain: true}))});
+  
+  var departmentList = await Department.findAll();
+  res.render('departments', {departmentList})
 });
 
-router.get('/users', async function(req,res){
+router.post('/deleteDepartment/:name', async function(req,res){
+  const departmentToDelete = await Department.findByPk(req.params.name);
+  await departmentToDelete.destroy();
+
+  var departmentList = await Department.findAll();
+  res.render('departments', {departmentList})
+});
+
+router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  var userList = await User.findAll();
+  res.render('users', {userList})
+});
+
+router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  var departmentList = await Department.findAll();
+  res.render('editUser', {departmentList})
+});
+
+router.post('/editUser/:id', async function(req,res){
+  // Se tiene que recibir nombre, email, password y departamento y darle update en la DB
+  const userToEdit = await User.findByPk(req.params.id);
+  await userToEdit.update({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    department: req.body.department
+  });
+
   res.render('users', {})
 });
 
-router.get('/editUser', async function(req,res){
-  res.render('editUser', {})
-});
+router.post('/deleteUser/:id', async function(req,res){
+  const userToDelete = await User.findByPk(req.params.id);
+  await userToDelete.destroy();
 
-router.post('/editUser', async function(req,res){
-  // Se tiene que recibir nombre, email, password y departamento y darle update en la DB
-  res.render('editUser', {})
+  var userList = await User.findAll();
+  res.render('users', {userList})
 });
 
 // Mau 

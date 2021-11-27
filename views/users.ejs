@@ -15,6 +15,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% for (var i = 0; i < userList.length; i++) { %>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td><%= userList[i].name %></td>
+                          <td><%= userList[i].email %></td>
+                          <td class="text-center"><a href="/editUser/<%= userList[i]._id%>"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteUser/<%= userList[i]._id%>"><i class="far fa-trash-alt"></i></a></td>
+                        </tr>
+                    <%  }   %>
                     <tr>
                         <th scope="row">1</th>
                         <td>Nombre Persona</td>

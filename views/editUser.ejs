@@ -24,11 +24,13 @@
                     <label class="form-label" for="password">Password</label>
                   </div>
 
-                  <!-- TODO: Cargar department id y department name -->
                   <div class="form-outline form-white mb-4">
                     <select id="department" class="form-control">
-                      <option value="0">departamento 0</option>
-                      <option value="1">departamento 1</option>
+                      <% for (var i = 0; i < departmentList.length; i++) { %>
+                        <option value=<%= i %>><%= departmentList[i].name %></option>
+                      <%  }   %>
+                      <option value="9">departamento 0</option>
+                      <option value="10">departamento 1</option>
                     </select>
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>
