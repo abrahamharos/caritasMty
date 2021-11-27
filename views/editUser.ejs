@@ -8,19 +8,19 @@
           <div class="card-body p-5">
 
             <p class="h1 mb-5">Editar Usuario</p>
-            <form action="/editUser" method="POST" enctype="multipart/form-data">
+            <form action="/editUser" method="POST">
                 <div class="form-outline form-white mb-4">
-                    <input type="text" id="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
+                    <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
                     <label class="form-label" for="name">Nombre</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <input type="email" id="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
+                    <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
                     <label class="form-label" for="email">Email</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <input type="password" id="password" class="form-control form-control-lg" placeholder="••••••••"/>
+                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="••••••••"/>
                     <label class="form-label" for="password">Password</label>
                   </div>
 

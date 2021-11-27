@@ -20,31 +20,10 @@
                           <th scope="row">1</th>
                           <td><%= userList[i].name %></td>
                           <td><%= userList[i].email %></td>
-                          <td class="text-center"><a href="/editUser/<%= userList[i]._id%>"><i class="far fa-edit"></i></a></td>
-                        <td class="text-center"><a href="/deleteUser/<%= userList[i]._id%>"><i class="far fa-trash-alt"></i></a></td>
+                          <td class="text-center"><a href="/editUser/<%= userList[i].id %>"><i class="far fa-edit"></i></a></td>
+                        <td class="text-center"><a href="/deleteUser/<%= userList[i].id %>"><i class="far fa-trash-alt"></i></a></td>
                         </tr>
                     <%  }   %>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Nombre Persona</td>
-                        <td>correoexample@gmail.com</td>
-                        <td class="text-center"><a href="/editUser?id=0"><i class="far fa-edit"></i></a></td>
-                        <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Nombre Persona</td>
-                        <td>correoexample@gmail.com</td>
-                        <td class="text-center"><a href="/editUser?id=0"><i class="far fa-edit"></i></a></td>
-                        <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Nombre Persona</td>
-                        <td>correoexample@gmail.com</td>
-                        <td class="text-center"><a href="/editUser?id=0"><i class="far fa-edit"></i></a></td>
-                        <td class="text-center"><a href="/deleteDepartment?id=0"><i class="far fa-trash-alt"></i></a></td>
-                    </tr>
                 </tbody>
             </table>
         </div>

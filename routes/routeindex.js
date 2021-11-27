@@ -74,10 +74,8 @@ router.get('/register', async function(req,res){
 
 router.post('/register', async function(req,res){
   console.log(req.body);
-  const obj = JSON.parse(JSON.stringify(req.body));
-  console.log(obj);
-  
-  await User.create(obj).then(function(user) {
+
+  await User.create(req.body).then(function(user) {
     console.log('\nCreated User:', user.get({ plain: true}))});
   /*.then(function(user) {
     user.update({
@@ -127,19 +125,19 @@ router.get('/deleteDepartment/:name', async function(req,res){
   res.render('users', {userList})
 });
 
-router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+// router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+router.get('/editUser/:id', async function(req,res){
   var departmentList = await Department.findAll();
   res.render('editUser', {departmentList})
 });
 
-router.post('/editUser/:id', async function(req,res){
-  // Se tiene que recibir nombre, email, password y departamento y darle update en la DB
-  const userToEdit = await User.findByPk(req.params.id);
+router.post('/editUser', async function(req,res){
+  console.log(req.body);
+  const userToEdit = await User.findByPk(req.body.id);
   await userToEdit.update({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
-    department: req.body.department
+    password: req.body.password
   });
 
   res.render('users', {})
