@@ -19,7 +19,7 @@ const TicketModel = (sequelize, DataTypes) => {
       },
       extras: {
         type: DataTypes.JSON,
-        allowNull: false
+        allowNull: true
       },
       status: {
         type: DataTypes.INTEGER,
@@ -55,4 +55,4 @@ const TicketModel = (sequelize, DataTypes) => {
   return Ticket;
 };
 
-export default TicketModel;
+module.exports = TicketModel;

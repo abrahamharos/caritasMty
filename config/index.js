@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
@@ -13,4 +13,4 @@ const dbUser = process.env.DB_USER || 'root';
 const dbPassword = process.env.DB_PASSWORD || '';
 const jwtSecret = process.env.JWT_SECRET || 'very-secret-string';
 
-export { port, dbHost, dbPort, dbName, dbUser, dbPassword, jwtSecret };
+module.exports = { port, dbHost, dbPort, dbName, dbUser, dbPassword, jwtSecret };
