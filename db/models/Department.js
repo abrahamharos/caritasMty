@@ -36,4 +36,4 @@ const DepartmentModel = (sequelize, DataTypes) => {
       return Department;
     };
     
-    module.exports = DepartmentModel;
+module.exports = DepartmentModel;
