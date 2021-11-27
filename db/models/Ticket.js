@@ -1,6 +1,6 @@
 const TicketModel = (sequelize, DataTypes) => {
   const Ticket = sequelize.define(
-    'Ticket',
+    'ticket',
     {
       subject: {
         type: DataTypes.STRING(200),
@@ -27,6 +27,7 @@ const TicketModel = (sequelize, DataTypes) => {
       }
     },
     {
+      timestamps: false,
       modelName: 'Ticket',
     }
   );
@@ -55,4 +56,4 @@ const TicketModel = (sequelize, DataTypes) => {
   return Ticket;
 };
 
-export default TicketModel;
+module.exports = TicketModel;
