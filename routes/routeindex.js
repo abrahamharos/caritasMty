@@ -56,8 +56,6 @@ router.get('/editUser', async function(req,res){
   res.render('editUser', {})
 });
 
-<<<<<<< HEAD
-=======
 // Mau 
 router.post('/api/crearTicket', function(req,res){
  
@@ -77,7 +75,6 @@ router.post('/api/crearTicket', function(req,res){
   
 });
 
->>>>>>> d89a135 (temporary routes)
 router.get('/editTicket', async function(req,res){
   res.render('editTicket', {})
 });
