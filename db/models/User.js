@@ -1,6 +1,6 @@
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define(
-    'User',
+    'user',
     {
       username: {
         type: DataTypes.STRING,

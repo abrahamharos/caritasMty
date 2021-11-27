@@ -98,8 +98,8 @@ router.get('/departments', async function(req,res){
   res.render('departments', {departmentList})
 });
 
-router.post('/departments', async function(req,res){
-  console.log(req.body.Nombre);
+router.post('/createDepartment', async function(req,res){
+  console.log(req.body);
   await Department.create({ name: req.body.Nombre }).then(function(user) {
     console.log('\nCreated Department:', user.get({ plain: true}))});
   

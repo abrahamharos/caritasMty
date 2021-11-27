@@ -1,6 +1,6 @@
 const DepartmentModel = (sequelize, DataTypes) => {
     const Department = sequelize.define(
-      'Department',
+      'department',
       {
         name: {
           type: DataTypes.STRING(200),
