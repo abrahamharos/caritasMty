@@ -84,6 +84,7 @@ router.post('/register', async function(req,res){
   })
 });
 
+// WORKS
 // router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
 router.get('/departments', async function(req,res){
   try {
@@ -98,6 +99,7 @@ router.get('/departments', async function(req,res){
   res.render('departments', {departmentList})
 });
 
+// WORKS
 router.post('/createDepartment', async function(req,res){
   console.log(req.body);
   await Department.create({ name: req.body.Nombre }).then(function(user) {
@@ -107,7 +109,8 @@ router.post('/createDepartment', async function(req,res){
   res.render('departments', {departmentList})
 });
 
-router.post('/deleteDepartment/:name', async function(req,res){
+// WORKS
+router.get('/deleteDepartment/:name', async function(req,res){
   const departmentToDelete = await Department.findByPk(req.params.name);
   await departmentToDelete.destroy();
 
@@ -115,7 +118,8 @@ router.post('/deleteDepartment/:name', async function(req,res){
   res.render('departments', {departmentList})
 });
 
-router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+// router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  router.get('/users', async function(req,res){
   var userList = await User.findAll();
   res.render('users', {userList})
 });
