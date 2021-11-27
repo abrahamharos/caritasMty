@@ -1,6 +1,6 @@
 const DepartmentModel = (sequelize, DataTypes) => {
     const Department = sequelize.define(
-      'Department',
+      'department',
       {
         name: {
           type: DataTypes.STRING(200),
@@ -8,6 +8,7 @@ const DepartmentModel = (sequelize, DataTypes) => {
         }
       },
       {
+        timestamps: false,
         modelName: 'Department',
       }
     );
@@ -35,4 +36,4 @@ const DepartmentModel = (sequelize, DataTypes) => {
       return Department;
     };
     
-export default DepartmentModel;
+module.exports = DepartmentModel;

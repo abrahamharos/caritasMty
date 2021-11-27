@@ -1,11 +1,7 @@
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define(
-    'User',
+    'user',
     {
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -18,12 +14,9 @@ const UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      role: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
     },
     {
+      timestamps: false,
       modelName: 'User',
     }
   );
@@ -41,4 +34,4 @@ const UserModel = (sequelize, DataTypes) => {
   return User;
 };
 
-export default UserModel;
+module.exports = UserModel;
