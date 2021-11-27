@@ -1,9 +1,16 @@
+const Department = require('./Department');
+const User = require('./User');
+
 const TicketModel = (sequelize, DataTypes) => {
   const Ticket = sequelize.define(
     'ticket',
     {
       subject: {
         type: DataTypes.STRING(200),
+        allowNull: false,
+      },
+      date: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
       description: {
@@ -31,27 +38,6 @@ const TicketModel = (sequelize, DataTypes) => {
       modelName: 'Ticket',
     }
   );
-
-  Ticket.associate = (models) => {
-    Ticket.belongsTo(models.User, {
-      foreignKey: {
-        name: 'userId',
-        allowNull: false,
-      },
-      as: 'tickets-belongs-user',
-    });
-  };
-
-  Ticket.associate = (models) => {
-    Ticket.belongsTo(models.Deparment, {
-      foreignKey: {
-        name: 'departmentId',
-        allowNull: false,
-      },
-      as: 'ticket-belongs-department',
-    });
-  };
-
 
   return Ticket;
 };

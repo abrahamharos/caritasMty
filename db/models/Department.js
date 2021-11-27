@@ -1,3 +1,6 @@
+const Ticket = require('./Ticket');
+const User = require('./User');
+
 const DepartmentModel = (sequelize, DataTypes) => {
     const Department = sequelize.define(
       'department',
@@ -13,27 +16,7 @@ const DepartmentModel = (sequelize, DataTypes) => {
       }
     );
 
-    Department.associate = models => {
-        Department.hasMany(models.Ticket, {
-            foreignKey: {
-                name: 'departmentId',
-                allowNull: false,
-              },
-          as: 'department-tickets',
-        });
-      }
-
-      Department.associate = models => {
-        Department.hasMany(models.User, {
-            foreignKey: {
-                name: 'departmentId',
-                allowNull: false,
-              },
-          as: 'department-users',
-        });
-      }
-
-      return Department;
-    };
+    return Department;
+};
     
 module.exports = DepartmentModel;

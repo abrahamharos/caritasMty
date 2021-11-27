@@ -1,3 +1,6 @@
+const Department = require('./Department');
+const Ticket = require('./Ticket');
+
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'user',
@@ -20,16 +23,6 @@ const UserModel = (sequelize, DataTypes) => {
       modelName: 'User',
     }
   );
-
-  User.associate = (models) => {
-    User.hasMany(models.Ticket, {
-      foreignKey: {
-        name: 'userId',
-        allowNull: false,
-      },
-      as: 'user-tickets',
-    });
-  };
 
   return User;
 };
