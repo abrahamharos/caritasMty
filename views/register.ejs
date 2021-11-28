@@ -19,25 +19,25 @@
                 
                 <form action="/register" method="POST">
                   <div class="form-outline form-white mb-4">
-                    <input type="text" id="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
+                    <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
                     <label class="form-label" for="name">Nombre</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <input type="email" id="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
+                    <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
                     <label class="form-label" for="email">Email</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <input type="password" id="password" class="form-control form-control-lg" placeholder="••••••••"/>
+                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="••••••••"/>
                     <label class="form-label" for="password">Password</label>
                   </div>
 
-                  <!-- TODO: Cargar department id y department name -->
                   <div class="form-outline form-white mb-4">
-                    <select id="department" class="form-control">
-                      <option value="0">departamento 0</option>
-                      <option value="1">departamento 1</option>
+                    <select id="department" name="departmentId" class="form-control">
+                      <% for (var i = 0; i < departmentList.length; i++) { %>
+                        <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
+                      <%  }   %>
                     </select>
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>

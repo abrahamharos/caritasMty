@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 // connection to db
 // importing routes
@@ -11,10 +12,11 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine', 'ejs');
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 // middlewares
 app.use(express.urlencoded({extended:false}));
+app.use(cookieParser());
 
 // routes
 app.use('/', indexRoutes);
