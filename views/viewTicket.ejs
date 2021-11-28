@@ -40,10 +40,28 @@
                 <div class="form-outline form-white mb-4">
                     <label class="form-label" for="status">Seleccione el estado</label>
                     <select id="status" class="form-control" name="status">
-                      <option value="0">Cancelado</option>
-                      <option value="1">Pendiente</option>
-                      <option value="2">En progreso</option>
-                      <option value="3">Completado</option>
+                      <% if (ticket.status == 0) { %>
+                        <option selected="selected" value="0">Cancelado</option>
+                        <option value="1">Pendiente</option>
+                        <option value="2">En progreso</option>
+                        <option value="3">Completado</option>
+                      <% } else if (ticket.status == 1) { %>
+                        <option value="0">Cancelado</option>
+                        <option selected="selected" value="1">Pendiente</option>
+                        <option value="2">En progreso</option>
+                        <option value="3">Completado</option>
+                      <% } else if (ticket.status == 2) { %>
+                        <option value="0">Cancelado</option>
+                        <option value="1">Pendiente</option>
+                        <option selected="selected" value="2">En progreso</option>
+                        <option value="3">Completado</option>
+                      <% } else { %>
+                        <option value="0">Cancelado</option>
+                        <option value="1">Pendiente</option>
+                        <option value="2">En progreso</option>
+                        <option selected="selected" value="3">Completado</option>
+                      <% } %>
+                      
                     </select>
                   </div>
                   <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
