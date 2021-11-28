@@ -124,20 +124,17 @@ router.get('/register', async function(req,res){
   res.render('register', {departmentList})
 });
 
+// WORKS
 router.post('/register', async function(req,res){
   console.log(req.body);
 
-  const newUser = await User.create(req.body);
-  console.log("User's auto-generated ID:", newUser.id);
-  /*.then(function(user) {
-    console.log('\nCreated User:', user.get({ plain: true}));
-    .then(function(user) {
+  const newUser = await User.create(req.body)
+  .then(function(user) {
     user.update({
       password: bcrypt.hashSync(user.password,10)
     })
     res.redirect("/")
   });
-  */
 });
 
 // WORKS
