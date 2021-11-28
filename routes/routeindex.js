@@ -8,7 +8,6 @@ const { sequelize, Ticket, User, Department } = require('../db')
   tells the "verify" function if the page is meant only for admins or not. You 
   also have to call "verify" to check if the user's token is still valid.
   Example route:
-
   router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
     console.log('Hello, this is a test page')
   });
@@ -68,6 +67,7 @@ await Ticket.update({ subject: "new subject" }, {
 
 // EDUARDO
 
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/index');
@@ -76,30 +76,29 @@ const verify = require("./verifyAccess")
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  const depts = await Department.findAll({ raw: true });
-  res.render('crearTicket', { depts })
+  res.render('home', {})
 });
 
-// WORKS
+router.get('/logout', (req,res)=> {
+  res.clearCookie("token")
+  res.redirect("/")
+  })
+
 router.get('/login', async function(req,res){
+  res.clearCookie("token");
   res.render('login', {})
 });
 
 router.post('/login', async function(req,res){  
-
-  // Validar si el usuario existe
   const user = User.findAll({
     where: { email: req.body.email }
     }).then(async function(users) {
       if (!users){
         return res.status(404).send("The user does not exist")
       }
-
-      // Si el usuario existe, vamos a generar un token de JWT
       else {
         var valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
       
-        // Si la contraseña es correcta generamos un JWT
         if (valid) {
           var token;
           if (users[0].dataValues.typeUser == "admin") {
@@ -120,13 +119,11 @@ router.post('/login', async function(req,res){
   })
 });
 
-// WORKS
 router.get('/register', async function(req,res){
   var departmentList = await Department.findAll();
   res.render('register', {departmentList})
 });
 
-// WORKS
 router.post('/register', async function(req,res){
   req.body.typeUser = 'user';
   console.log(req.body); 
@@ -141,15 +138,12 @@ router.post('/register', async function(req,res){
   });
 });
 
-// GOOD
 router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-// router.get('/departments', async function(req,res){
   const departmentList = await Department.findAll();
   res.render('departments', {departmentList})
 });
 
-// GOOD
-router.post('/createDepartment', async function(req,res){
+router.post('/createDepartment', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   await Department.create(req.body)
   .then(function(){
     res.redirect('/departments')
@@ -159,8 +153,7 @@ router.post('/createDepartment', async function(req,res){
   });
 });
 
-// GOOD
-router.get('/deleteDepartment/:name', async function(req,res){
+router.get('/deleteDepartment/:name', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const departmentToDelete = await Department.findByPk(req.params.name);
   await departmentToDelete.destroy()
   .then(function(){
@@ -171,22 +164,18 @@ router.get('/deleteDepartment/:name', async function(req,res){
   });
 });
 
-// GOOD
-// router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  router.get('/users', async function(req,res){    
+router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){  
   var userList = await User.findAll();
   res.render('users', {userList})
 });
 
-// GOOD
-router.get('/editUser/:id', async function(req,res){
+router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   var departmentList = await Department.findAll();
   const uid = req.params.id;
   res.render('editUser', {departmentList, uid})
 });
 
-// GOOD
-router.post('/editUser/:id', async function(req,res){
+router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const userToEdit = await User.findByPk(req.params.id);
 
   await userToEdit.update({
@@ -202,8 +191,7 @@ router.post('/editUser/:id', async function(req,res){
   });
 });
 
-// GOOD 
-router.get('/deleteUser/:id', async function(req,res){
+router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
   await userToDelete.destroy()
   .then(function(){
@@ -215,6 +203,32 @@ router.get('/deleteUser/:id', async function(req,res){
 });
 
 // Mau 
+
+
+router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify,async function(req,res){
+  
+  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
+  console.log(req.body.subject);
+  const ticket = await Ticket.create({
+    userId: 1,
+    date: new Date(),
+    subject: req.body.subject,
+    userId: req.body.userId,
+    departmentId: req.body.departmentId,
+    description: req.body.description,
+    evidence: req.body.evidence,
+    priority: req.body.priority
+  })
+  .then(function(ticket){
+    res.redirect('/crearTicket')
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+});
+
+
 router.get('/crearTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
   res.render('crearTicket', { depts })
@@ -244,11 +258,11 @@ router.get('/editTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
   console.log(ticket, depts);
   res.render('editTicket', { ticket, depts });
+
 });
 
 // Faltan testear los posts y resolver los archivos
 router.post('/editTicket', async function(req,res){
-  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
   const ticket = await Ticket.update(
     {
       subject: req.body.subject,
@@ -275,13 +289,14 @@ router.get('/misTickets', async function(req,res){
   res.render('misTickets', {})
 });
 
-// Falta testear los posts
-router.post('/updateStatus', async function(req,res){
+router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();},async function(req,res){
   const ticket = await Ticket.update(
     { status: req.body.status },
     { where: { id: req.query.id } }
   )
-  res.redirect('/viewTicket?id=' + req.query.id);
+  res.redirect('/viewTickets')
+
+  
 });
 
 // Shaar
@@ -290,10 +305,11 @@ router.get('/viewTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
+  console.log(ticket);
   res.render('viewTicket', { ticket });
 });
 
-router.get('/viewTickets', async function(req,res){
+router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, async function(req,res){
   const cancelados = await Ticket.findAll({
     where: {
       status: 0
