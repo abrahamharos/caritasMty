@@ -11,7 +11,7 @@ const TicketModel = (sequelize, DataTypes) => {
       },
       date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        defaultValue: sequelize.fn('NOW')
       },
       description: {
         type: DataTypes.STRING(1000),
@@ -19,14 +19,12 @@ const TicketModel = (sequelize, DataTypes) => {
       },
       evidence: {
         type: DataTypes.JSON,
-        allowNull: false,
       },
       priority: {
         type: DataTypes.INTEGER,
       },
       extras: {
         type: DataTypes.JSON,
-        allowNull: false
       },
       status: {
         type: DataTypes.INTEGER,
