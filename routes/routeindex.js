@@ -211,15 +211,16 @@ router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next
 
 // Faltan testear los posts
 router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  // const ticket = await Ticket.create({
-  //   userId: 1,
-  //   subject: req.body.subject,
-  //   userId: req.body.userId,
-  //   departmentId: req.body.departmentId,
-  //   description: req.body.description,
-  //   evidence: req.body.evidence,
-  //   priority: req.body.priority
-  // })
+  console.log(req.body)
+  const ticket = await Ticket.create({
+    subject: req.body.subject,
+    userId: req.userId,
+    departmentId: req.body.departmentId,
+    description: req.body.description,
+    evidence: req.body.evidence,
+    priority: req.body.priority,
+    status: 1,
+  })
 
   res.redirect('/crearTicket')
 });
@@ -235,7 +236,7 @@ router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next(
 
 });
 
-// Faltan testear los posts y resolver los archivos
+// Falta resolver los archivos
 router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   console.log(req.body);
   const ticket = await Ticket.update(
@@ -254,7 +255,11 @@ router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next
 });
 
 router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  
+  const tickets = await Ticket.findAll({
+    where: { userId: req.userId },
+    raw: true
+  })
+  console.log(tickets)
   res.render('misTickets', {})
 });
 
