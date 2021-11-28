@@ -8,7 +8,7 @@
           <div class="card-body p-5">
 
             <p class="h1 mb-5">Editar Usuario</p>
-            <form action="/editUser" method="POST">
+            <form action="/editUser/<%= uid %>" method="POST">
                 <div class="form-outline form-white mb-4">
                     <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
                     <label class="form-label" for="name">Nombre</label>
@@ -25,12 +25,10 @@
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <select id="department" class="form-control">
+                    <select id="department" name="departmentId" class="form-control">
                       <% for (var i = 0; i < departmentList.length; i++) { %>
-                        <option value=<%= i %>><%= departmentList[i].name %></option>
+                        <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
                       <%  }   %>
-                      <option value="9">departamento 0</option>
-                      <option value="10">departamento 1</option>
                     </select>
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>

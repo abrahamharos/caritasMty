@@ -176,29 +176,33 @@ router.get('/deleteDepartment/:name', async function(req,res){
 // router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   router.get('/users', async function(req,res){    
   var userList = await User.findAll();
-  console.log(userList);
   res.render('users', {userList})
 });
 
 // router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
 router.get('/editUser/:id', async function(req,res){
   var departmentList = await Department.findAll();
-  res.render('editUser', {departmentList})
+  const uid = req.params.id;
+  res.render('editUser', {departmentList, uid})
 });
 
 router.post('/editUser/:id', async function(req,res){
-  console.log(req.body);
-  const userToEdit = await User.findAll(req.body.id);
-  User.findAll({
-    where: { email: req.body.email }
-    })
+  const userToEdit = await User.findByPk(req.params.id);
+
   await userToEdit.update({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: bcrypt.hashSync(req.body.password,10),
+    departmentId: req.body.departmentId
+  }).then(function(editedUser){
+    res.redirect('/users')
+  })
+  .catch(function(err){
+    console.log(err)
   });
 
-  res.render('users', {})
+  //var userList = await User.findAll();
+  //res.render('users', {userList})
 });
 
 // WORKS
