@@ -93,7 +93,7 @@ router.post('/login', async function(req,res){
   const user = User.findAll({
     where: { email: req.body.email }
     }).then(async function(users) {
-      if (!users){
+      if (users.length == 0){
         return res.status(404).send("The user does not exist")
       }
       else {
