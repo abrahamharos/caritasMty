@@ -25,11 +25,15 @@
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <!-- TODO: Poner como selected el que le corresponde al usuario y actualizar el typeUser si se cambia de rol -->
+                    <!-- TODO: Actualizar el typeUser si se cambia de rol? -->
                     <select id="department" name="departmentId" class="form-control">
                       <% for (var i = 0; i < departmentList.length; i++) { %>
-                        <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
-                      <%  }   %>
+                        <% if (departmentList[i].id == user.departmentId) { %>
+                          <option selected value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
+                        <% } else { %> 
+                          <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
+                        <% } %> 
+                      <%  }   %> 
                     </select>
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>
