@@ -15,6 +15,9 @@
               <div class="mt-md-4 pb-5">
 
                 <p class="h1 font-weight-bold">Login</p>
+                <% if (loginFailed) { %>
+                  <p class="h3 font-weight-bold text-danger">Credenciales incorrectas</p>
+                <% } %>
                 <p class="text-white-50 mb-5">Introduce tu email y contraseña</p>
                 
                 <form action="/login" method="POST">

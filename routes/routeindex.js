@@ -86,8 +86,9 @@ router.get('/logout', (req,res)=> {
   })
 
 router.get('/login', async function(req,res){
+  const loginFailed = false;
   res.clearCookie("token");
-  res.render('login', {})
+  res.render('login', { loginFailed })
 });
 
 router.post('/login', async function(req,res){  
@@ -95,9 +96,9 @@ router.post('/login', async function(req,res){
     where: { email: req.body.email }
     }).then(async function(users) {
       if (users.length == 0){
-        return res.status(404).send("The user does not exist")
-      }
-      else {
+        const loginFailed = true;
+        res.render('login', { loginFailed })
+      } else {
         let valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
       
         if (valid) {
@@ -110,11 +111,10 @@ router.post('/login', async function(req,res){
           }
           res.cookie("token", token, {httpOnly:true})
           res.redirect("/")
-        }
-      
-        else {
+        } else {
           console.log("Password is invalid")
-          res.redirect('/login');
+          const loginFailed = true;
+          res.render('login', { loginFailed });
         }
       }
   })
