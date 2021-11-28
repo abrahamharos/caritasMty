@@ -37,7 +37,7 @@
                 <div class="form-group">
                   <label for="priority">Prioridad (0 más baja y 4 la más alta)</label>
                   <select id="priority" class="form-control" name="priority">
-                    <% for (let i = 1; i <= 4; i++) { %>
+                    <% for (let i = 0; i <= 4; i++) { %>
                       <% if (ticket.priority == i) { %>
                         <option selected="selected" value="<%= i %>"><%= i %></option>
                       <% } else { %>
