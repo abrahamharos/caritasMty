@@ -80,26 +80,26 @@ router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verif
   res.render('crearTicket', { depts })
 });
 
-// WORKS
+router.get('/logout', (req,res)=> {
+  res.clearCookie("token")
+  res.redirect("/")
+  })
+
 router.get('/login', async function(req,res){
+  res.clearCookie("token");
   res.render('login', {})
 });
 
 router.post('/login', async function(req,res){  
-
-  // Validar si el usuario existe
   const user = User.findAll({
     where: { email: req.body.email }
     }).then(async function(users) {
       if (!users){
         return res.status(404).send("The user does not exist")
       }
-
-      // Si el usuario existe, vamos a generar un token de JWT
       else {
         var valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
       
-        // Si la contraseña es correcta generamos un JWT
         if (valid) {
           var token;
           if (users[0].dataValues.typeUser == "admin") {
@@ -120,13 +120,11 @@ router.post('/login', async function(req,res){
   })
 });
 
-// WORKS
 router.get('/register', async function(req,res){
   var departmentList = await Department.findAll();
   res.render('register', {departmentList})
 });
 
-// WORKS
 router.post('/register', async function(req,res){
   req.body.typeUser = 'user';
   console.log(req.body); 
@@ -141,15 +139,12 @@ router.post('/register', async function(req,res){
   });
 });
 
-// GOOD
 router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-// router.get('/departments', async function(req,res){
   const departmentList = await Department.findAll();
   res.render('departments', {departmentList})
 });
 
-// GOOD
-router.post('/createDepartment', async function(req,res){
+router.post('/createDepartment', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   await Department.create(req.body)
   .then(function(){
     res.redirect('/departments')
@@ -159,8 +154,7 @@ router.post('/createDepartment', async function(req,res){
   });
 });
 
-// GOOD
-router.get('/deleteDepartment/:name', async function(req,res){
+router.get('/deleteDepartment/:name', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const departmentToDelete = await Department.findByPk(req.params.name);
   await departmentToDelete.destroy()
   .then(function(){
@@ -171,22 +165,18 @@ router.get('/deleteDepartment/:name', async function(req,res){
   });
 });
 
-// GOOD
-// router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  router.get('/users', async function(req,res){    
+router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){  
   var userList = await User.findAll();
   res.render('users', {userList})
 });
 
-// GOOD
-router.get('/editUser/:id', async function(req,res){
+router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   var departmentList = await Department.findAll();
   const uid = req.params.id;
   res.render('editUser', {departmentList, uid})
 });
 
-// GOOD
-router.post('/editUser/:id', async function(req,res){
+router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const userToEdit = await User.findByPk(req.params.id);
 
   await userToEdit.update({
@@ -202,8 +192,7 @@ router.post('/editUser/:id', async function(req,res){
   });
 });
 
-// GOOD 
-router.get('/deleteUser/:id', async function(req,res){
+router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
   await userToDelete.destroy()
   .then(function(){
