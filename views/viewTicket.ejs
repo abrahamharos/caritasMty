@@ -28,8 +28,8 @@
             <p><%= ticket.description %></p>
             <p><b>Evidencia:</b></p>
             <p>
-              <% if (ticket.evidence) { %>
-                <%= ticket.evidence %>
+              <% if (hasFile) { %>
+                <a href="/downloadEvidence?file=<%= ticket.evidence %>"><%= ticket.evidence %></a>
               <% } else { %>
                 No hay evidencia
               <% } %>

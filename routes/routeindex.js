@@ -3,7 +3,9 @@ const express = require('express');
 const { Parser } = require('json2csv');
 const router = express.Router();
 const { sequelize, Ticket, User, Department } = require('../db')
-const multer  = require('multer')
+const multer  = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 /* IMPORTANT: about routes
   In each route, you have to include an anonymous middleware function that 
@@ -233,11 +235,10 @@ router.post('/crearTicket', upload.single('evidence'), function (req,res,next) {
     userId: req.userId,
     departmentId: req.body.departmentId,
     description: req.body.description,
-    evidence: null,
+    evidence: req.file.originalname,
     priority: req.body.priority,
     status: 1,
   })
-  console.log(req.file, req.body)
   res.redirect('/viewTicket?id=' + ticket.id)
 });
 
@@ -305,7 +306,19 @@ router.get('/viewTicket', function (req,res,next) {req.adminsOnly = false; next(
     include: [ User, Department ], 
     raw: true 
   });
-  res.render('viewTicket', { ticket, isAdmin });
+  if (ticket.evidence) {
+    if (fs.existsSync("./public/uploads/" + ticket.evidence)) {
+      const hasFile = true;
+      res.render('viewTicket', { ticket, isAdmin, hasFile });
+    } else {
+      const hasFile = false;
+      res.render('viewTicket', { ticket, isAdmin, hasFile });
+    }
+  } else {
+    const hasFile = false;
+    res.render('viewTicket', { ticket, isAdmin, hasFile });
+  }
+  
 });
 
 router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -347,6 +360,23 @@ router.get('/report', function (req,res,next) {req.adminsOnly = true; next();}, 
 
   res.attachment('reporte.csv');
   res.status(200).send(csv);
+});
+
+router.get('/downloadEvidence', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+  const options = {
+    root: path.join(__dirname, '../public/uploads')
+  }
+  if (fs.existsSync("./public/uploads/" + req.query.file)) {
+    res.sendFile(req.query.file, options, function (err) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('Sent:', req.query.file)
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
 });
 
 module.exports = router;

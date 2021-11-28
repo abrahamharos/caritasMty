@@ -18,13 +18,13 @@ const TicketModel = (sequelize, DataTypes) => {
         allowNull: false,
       },
       evidence: {
-        type: DataTypes.JSON,
+        type: DataTypes.STRING(255),
       },
       priority: {
         type: DataTypes.INTEGER,
       },
       extras: {
-        type: DataTypes.JSON,
+        type: DataTypes.STRING(255),
       },
       status: {
         type: DataTypes.INTEGER,
