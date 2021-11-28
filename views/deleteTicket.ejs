@@ -1,0 +1,23 @@
+<%- include ("./partials/_header") %>
+  <%- include ("./partials/_navbar") %>
+
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-6">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+              <p class="h1 mb-5">Borrar el siguiente ticket</p>
+              <form action="/deleteTicket" method="POST">
+                <div class="form-group">
+                  <p class="h3 mb-5"><%= ticket.subject %></p>
+                </div>
+                <input type="hidden" value="<%= ticket.id %>" name="id">
+                <button class="btn btn-danger" type="submit">Si</button>
+                <a href="/misTickets"><button class="btn btn-primary" type="button">No</button></a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include ("./partials/_footer") %>
