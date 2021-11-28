@@ -300,7 +300,7 @@ router.get('/viewTicket', function (req,res,next) {req.adminsOnly = false; next(
   res.render('viewTicket', { ticket });
 });
 
-router.get('/viewTickets', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const cancelados = await Ticket.findAll({
     where: {
       status: 0
