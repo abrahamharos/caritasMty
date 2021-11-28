@@ -285,16 +285,7 @@ router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; nex
       where: {id: req.query.id}
     }
   )
-  .then(function(ticket){
-   
-    res.render('viewTickets.ejs', {
-      success: true,
-      Ticket: ticket
-    })
-    })
-  .catch(function(err){
-    console.log(err)
-  })
+  res.redirect('/viewTickets')
 
   
 });
@@ -309,7 +300,7 @@ router.get('/viewTicket', async function(req,res){
   res.render('viewTicket', { ticket });
 });
 
-router.get('/viewTickets', async function(req,res){
+router.get('/viewTickets', function (req,res,next) {req.adminsOnly = false; next();}, async function(req,res){
   const cancelados = await Ticket.findAll({
     where: {
       status: 0
