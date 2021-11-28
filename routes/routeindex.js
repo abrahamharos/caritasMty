@@ -99,7 +99,7 @@ router.post('/login', async function(req,res){
       
         // Si la contraseña es correcta generamos un JWT
         if (valid) {
-          var token
+          var token;
           if (users[0].dataValues.role == "Administrator") {
             token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, jwtSecret, {expiresIn: "1h"})
           }
@@ -124,9 +124,9 @@ router.get('/register', async function(req,res){
   res.render('register', {departmentList})
 });
 
-// WORKS
+// WORKS, falta que no es admin
 router.post('/register', async function(req,res){
-  console.log(req.body);
+  console.log(req.body); 
 
   const newUser = await User.create(req.body)
   .then(function(user) {
@@ -183,9 +183,12 @@ router.get('/editUser/:id', async function(req,res){
   res.render('editUser', {departmentList})
 });
 
-router.post('/editUser', async function(req,res){
+router.post('/editUser/:id', async function(req,res){
   console.log(req.body);
-  const userToEdit = await User.findByPk(req.body.id);
+  const userToEdit = await User.findAll(req.body.id);
+  User.findAll({
+    where: { email: req.body.email }
+    })
   await userToEdit.update({
     name: req.body.name,
     email: req.body.email,
@@ -195,6 +198,7 @@ router.post('/editUser', async function(req,res){
   res.render('users', {})
 });
 
+// WORKS
 router.get('/deleteUser/:id', async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
   await userToDelete.destroy();
