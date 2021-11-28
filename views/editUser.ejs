@@ -10,12 +10,12 @@
             <p class="h1 mb-5">Editar Usuario</p>
             <form action="/editUser/<%= uid %>" method="POST">
                 <div class="form-outline form-white mb-4">
-                    <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
+                    <input type="text" id="name" name="name" class="form-control form-control-lg" value="<%= user.name %>" placeholder="Juan Perez"/>
                     <label class="form-label" for="name">Nombre</label>
                   </div>
 
                   <div class="form-outline form-white mb-4">
-                    <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
+                    <input type="email" id="email" name="email" class="form-control form-control-lg" value="<%= user.email %>" placeholder="correo@gmail.com"/>
                     <label class="form-label" for="email">Email</label>
                   </div>
 
@@ -25,6 +25,7 @@
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <!-- TODO: Poner como selected el que le corresponde al usuario y actualizar el typeUser si se cambia de rol -->
                     <select id="department" name="departmentId" class="form-control">
                       <% for (var i = 0; i < departmentList.length; i++) { %>
                         <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>

@@ -97,10 +97,10 @@ router.post('/login', async function(req,res){
         return res.status(404).send("The user does not exist")
       }
       else {
-        var valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
+        let valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
       
         if (valid) {
-          var token;
+          let token;
           if (users[0].dataValues.typeUser == "admin") {
             token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, jwtSecret, {expiresIn: "1h"})
           }
@@ -120,7 +120,7 @@ router.post('/login', async function(req,res){
 });
 
 router.get('/register', async function(req,res){
-  var departmentList = await Department.findAll();
+  let departmentList = await Department.findAll();
   res.render('register', {departmentList})
 });
 
@@ -165,14 +165,16 @@ router.get('/deleteDepartment/:name', function (req,res,next) {req.adminsOnly = 
 });
 
 router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){  
-  var userList = await User.findAll();
+  let userList = await User.findAll();
   res.render('users', {userList})
 });
 
 router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  var departmentList = await Department.findAll();
+  let departmentList = await Department.findAll();
+  const user = await User.findByPk(req.params.id, { raw: true });
   const uid = req.params.id;
-  res.render('editUser', {departmentList, uid})
+  console.log(user)
+  res.render('editUser', { user, departmentList, uid })
 });
 
 router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
