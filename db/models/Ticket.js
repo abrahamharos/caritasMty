@@ -28,7 +28,8 @@ const TicketModel = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1 
       }
     },
     {
