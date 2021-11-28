@@ -17,6 +17,10 @@ const UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      typeUser: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
