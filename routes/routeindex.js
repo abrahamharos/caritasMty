@@ -76,7 +76,8 @@ const verify = require("./verifyAccess")
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  res.render('crearTicket', {})
+  const depts = await Department.findAll({ raw: true });
+  res.render('crearTicket', { depts })
 });
 
 // WORKS
@@ -213,7 +214,6 @@ router.get('/deleteUser/:id', async function(req,res){
 // Mau 
 router.get('/crearTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
-  console.log("pene", depts);
   res.render('crearTicket', { depts })
 });
 
