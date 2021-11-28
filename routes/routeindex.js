@@ -204,14 +204,14 @@ router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; ne
 
 // Mau 
 
+// Falta resolver los archivos
 router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const depts = await Department.findAll({ raw: true });
   res.render('crearTicket', { depts })
 });
 
-// Faltan testear los posts
+// Falta resolver los archivos
 router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  console.log(req.body)
   const ticket = await Ticket.create({
     subject: req.body.subject,
     userId: req.userId,
@@ -221,11 +221,10 @@ router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; nex
     priority: req.body.priority,
     status: 1,
   })
-
-  res.redirect('/crearTicket')
+  res.redirect('/viewTicket?id=' + ticket.id)
 });
 
-// Funciona, solo falta resolver los archivos
+// Falta resolver los archivos
 router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { 
     include: [ User, Department ], 
@@ -245,13 +244,23 @@ router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next
       departmentId: req.body.departmentId,
       description: req.body.description,
       evidence: req.body.evidence,
-      priority: req.body.priority},
-    {
-      where: { id: req.query.id }
-    }
+      priority: req.body.priority
+    },
+    { where: { id: req.query.id }}
   )
-  
-  res.redirect('/viewTicket?id=' + req.query.id);
+  res.redirect('/misTickets');
+});
+
+router.get('/deleteTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+  const ticket = await Ticket.findByPk(req.query.id, { raw: true });
+  res.render('deleteTicket', { ticket });
+});
+
+router.post('/deleteTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+  const ticket = await Ticket.destroy(
+    { where: { id: req.body.id }}
+  )
+  res.redirect('/misTickets');
 });
 
 router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
@@ -259,16 +268,13 @@ router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next(
     where: { userId: req.userId },
     raw: true
   })
-  console.log(tickets)
   res.render('misTickets', { tickets })
 });
 
 router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  const status = req.body.status;
-  const id = req.query.id;
   const ticket = await Ticket.update(
     { status: req.body.status },
-    { where: { id: req.query.id } }
+    { where: { id: req.query.id }}
   )
   res.redirect('/viewTickets')
 });
