@@ -220,6 +220,7 @@ router.get('/crearTicket', async function(req,res){
   res.render('crearTicket', { depts })
 });
 
+// Faltan testear los posts
 router.post('/crearTicket', async function(req,res){
   // const ticket = await Ticket.create({
   //   userId: 1,
@@ -234,6 +235,7 @@ router.post('/crearTicket', async function(req,res){
   res.redirect('/crearTicket')
 });
 
+// Funciona, solo falta resolver los archivos
 router.get('/editTicket', async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { 
     include: [ User, Department ], 
@@ -244,6 +246,7 @@ router.get('/editTicket', async function(req,res){
   res.render('editTicket', { ticket, depts });
 });
 
+// Faltan testear los posts y resolver los archivos
 router.post('/editTicket', async function(req,res){
   const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
   const ticket = await Ticket.update(
@@ -268,17 +271,15 @@ router.post('/editTicket', async function(req,res){
 });
 
 router.get('/misTickets', async function(req,res){
+  
   res.render('misTickets', {})
 });
 
+// Falta testear los posts
 router.post('/updateStatus', async function(req,res){
   const ticket = await Ticket.update(
-    {
-      status: req.body.status
-    },
-    {
-      where: { id: req.query.id }
-    }
+    { status: req.body.status },
+    { where: { id: req.query.id } }
   )
   res.redirect('/viewTicket?id=' + req.query.id);
 });
