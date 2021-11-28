@@ -266,12 +266,12 @@ router.post('/editTicket', upload.single('evidence'), function (req,res,next) {r
       subject: req.body.subject,
       departmentId: req.body.departmentId,
       description: req.body.description,
-      evidence: req.file.originalname,
+      evidence: req.file ? req.file.originalname : req.body.currFilename,
       priority: req.body.priority
     },
     { where: { id: req.query.id }}
   )
-  if (req.body.currFilename && fs.existsSync("./public/uploads/" + req.body.currFilename)) {
+  if (req.file && req.body.currFilename && fs.existsSync("./public/uploads/" + req.body.currFilename)) {
     fs.rm("./public/uploads/" + req.body.currFilename, {}, err => {
       if (err) console.log(err.message);
       else console.log("File deleted");
