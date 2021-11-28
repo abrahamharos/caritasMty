@@ -14,34 +14,38 @@
               </div>
               <div class="mt-md-4 pb-5">
 
-                <p class="h1 font-weight-bold">Registrate</p>
-                <p class="text-white-50 mb-5">Introduce tu email y contraseña!</p>
+                <p class="h1 font-weight-bold">Regístrate</p>
+                <p class="text-white-50 mb-5">Introduce tu email y contraseña</p>
                 
                 <form action="/register" method="POST">
                   <div class="form-outline form-white mb-4">
-                    <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Perez"/>
-                    <label class="form-label" for="name">Nombre</label>
+                    <label class="form-label" for="name" style="float: left;">Nombre</label>
+                    <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Juan Pérez"/>
+                    
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="email" style="float: left;">Email</label>
                     <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="correo@gmail.com"/>
-                    <label class="form-label" for="email">Email</label>
+                    
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="password" style="float: left;">Password</label>
                     <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="••••••••"/>
-                    <label class="form-label" for="password">Password</label>
+                    
                   </div>
 
                   <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="department" style="float: left;">Seleccione el departamento</label>
                     <select id="department" name="departmentId" class="form-control">
                       <% for (var i = 0; i < departmentList.length; i++) { %>
                         <option value=<%= departmentList[i].id %>><%= departmentList[i].name %></option>
                       <%  }   %>
                     </select>
-                    <label class="form-label" for="department">Seleccione el departamento</label>
+                    
                   </div>
-                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Registrate</button>
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Regístrate</button>
                 </form>
               </div>
 
