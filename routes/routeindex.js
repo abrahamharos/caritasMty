@@ -8,7 +8,6 @@ const { sequelize, Ticket, User, Department } = require('../db')
   tells the "verify" function if the page is meant only for admins or not. You 
   also have to call "verify" to check if the user's token is still valid.
   Example route:
-
   router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
     console.log('Hello, this is a test page')
   });
@@ -68,6 +67,7 @@ await Ticket.update({ subject: "new subject" }, {
 
 // EDUARDO
 
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/index');
@@ -76,7 +76,7 @@ const verify = require("./verifyAccess")
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  res.render('crearTicket', {})
+  res.render('home', {})
 });
 
 // WORKS
@@ -211,11 +211,11 @@ router.get('/deleteUser/:id', async function(req,res){
 });
 
 // Mau 
-router.get('/crearTicket', async function(req,res){
+router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, async function(req,res){
   res.render('crearTicket', {})
 });
 
-router.post('/crearTicket', async function(req,res){
+router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify,async function(req,res){
   
   const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
   console.log(req.body.subject);
@@ -238,11 +238,11 @@ router.post('/crearTicket', async function(req,res){
 
 });
 
-router.get('/editTicket', async function(req,res){
+router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, async function(req,res){
   res.render('editTicket', {})
 });
 
-router.post('/editTicket', async function(req,res){
+router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){
   const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
   const ticket = await Ticket.update(
     {
@@ -265,20 +265,33 @@ router.post('/editTicket', async function(req,res){
   
 });
 
-router.get('/misTickets', async function(req,res){
+router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){
   res.render('misTickets', {})
 });
 
-router.post('/updateStatus', async function(req,res){
+router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();},async function(req,res){
+  const status = req.body.status;
+  const id = req.query.id;
   const ticket = await Ticket.update(
     {
       status: req.body.status
     },
     {
-      where: { id: req.query.id }
+      where: {id: req.query.id}
     }
   )
-  res.redirect('/viewTicket?id=' + req.query.id);
+  .then(function(ticket){
+   
+    res.render('viewTickets.ejs', {
+      success: true,
+      Ticket: ticket
+    })
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+  
 });
 
 // Shaar
@@ -287,6 +300,7 @@ router.get('/viewTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
+  console.log(ticket);
   res.render('viewTicket', { ticket });
 });
 
