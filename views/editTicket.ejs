@@ -8,7 +8,7 @@
             <div class="card-body p-5">
 
               <p class="h1 mb-5">Editar ticket</p>
-              <form action="/editTicket?id=<%= ticket.id %>" method="POST">
+              <form action="/editTicket?id=<%= ticket.id %>" enctype="multipart/form-data" method="POST">
                 <div class="form-group">
                   <label for="subject">Asunto</label>
                   <input type="text" class="form-control" name="subject" id="subject" placeholder="Ejemplo: Mouse roto" value="<%= ticket.subject %>" required>
@@ -30,8 +30,21 @@
                   <textarea class="form-control" name="description" id="description" rows="3" placeholder="Describre el problema claramente aquí" required><%= ticket.description %></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="evidence">Adjunta evidencia</label>
+                  <p>
+                    <% if (hasFile) { %>
+                      Evidencia actual: <br>
+                      <a href="/downloadEvidence?file=<%= ticket.evidence %>"><%= ticket.evidence %></a>
+                    <% } else { %>
+                      No hay evidencia
+                    <% } %>
+                  </p>
+                  <label for="evidence">Cambia la evidencia</label>
                   <input type="file" class="form-control-file" name="evidence" id="evidence">
+                  <% if (hasFile) { %>
+                    <input type="hidden" name="currFilename" id="currFilename" value="<%= ticket.evidence %>">
+                  <% } else { %>
+                    <input type="hidden" name="currFilename" id="currFilename" value="">
+                  <% } %>
                 </div>
                 <hr class="my-4">
                 <div class="form-group">

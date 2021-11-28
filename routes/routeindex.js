@@ -250,22 +250,33 @@ router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next(
   });
   const depts = await Department.findAll({ raw: true });
   const isAdmin = req.isAdmin;
-  res.render('editTicket', { ticket, depts, isAdmin });
-
+  if (ticket.evidence && fs.existsSync("./public/uploads/" + ticket.evidence)) {
+    const hasFile = true;
+    res.render('editTicket', { ticket, depts, isAdmin, hasFile });
+  } else {
+    const hasFile = false;
+    res.render('editTicket', { ticket, depts, isAdmin, hasFile });
+  }
 });
 
 // Falta resolver los archivos
-router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+router.post('/editTicket', upload.single('evidence'), function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.update(
     {
       subject: req.body.subject,
       departmentId: req.body.departmentId,
       description: req.body.description,
-      evidence: req.body.evidence,
+      evidence: req.file.originalname,
       priority: req.body.priority
     },
     { where: { id: req.query.id }}
   )
+  if (req.body.currFilename && fs.existsSync("./public/uploads/" + req.body.currFilename)) {
+    fs.rm("./public/uploads/" + req.body.currFilename, {}, err => {
+      if (err) console.log(err.message);
+      else console.log("File deleted");
+    });
+  }
   res.redirect('/misTickets');
 });
 
@@ -306,19 +317,13 @@ router.get('/viewTicket', function (req,res,next) {req.adminsOnly = false; next(
     include: [ User, Department ], 
     raw: true 
   });
-  if (ticket.evidence) {
-    if (fs.existsSync("./public/uploads/" + ticket.evidence)) {
-      const hasFile = true;
-      res.render('viewTicket', { ticket, isAdmin, hasFile });
-    } else {
-      const hasFile = false;
-      res.render('viewTicket', { ticket, isAdmin, hasFile });
-    }
+  if (ticket.evidence && fs.existsSync("./public/uploads/" + ticket.evidence)) {
+    const hasFile = true;
+    res.render('viewTicket', { ticket, isAdmin, hasFile });
   } else {
     const hasFile = false;
     res.render('viewTicket', { ticket, isAdmin, hasFile });
   }
-  
 });
 
 router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
