@@ -8,7 +8,7 @@
             <div class="card-body p-5">
 
               <p class="h1 mb-5">Editar ticket</p>
-              <form action="/editTicket?id=<%= ticket.id %>" method="POST" enctype="multipart/form-data">
+              <form action="/editTicket?id=<%= ticket.id %>" method="POST">
                 <div class="form-group">
                   <label for="subject">Asunto</label>
                   <input type="text" class="form-control" name="subject" id="subject" placeholder="Ejemplo: Mouse roto" value="<%= ticket.subject %>" required>

@@ -204,13 +204,13 @@ router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; ne
 
 // Mau 
 
-router.get('/crearTicket', async function(req,res){
+router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const depts = await Department.findAll({ raw: true });
   res.render('crearTicket', { depts })
 });
 
 // Faltan testear los posts
-router.post('/crearTicket', async function(req,res){
+router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   // const ticket = await Ticket.create({
   //   userId: 1,
   //   subject: req.body.subject,
@@ -225,7 +225,7 @@ router.post('/crearTicket', async function(req,res){
 });
 
 // Funciona, solo falta resolver los archivos
-router.get('/editTicket', async function(req,res){
+router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { 
     include: [ User, Department ], 
     raw: true 
@@ -236,7 +236,7 @@ router.get('/editTicket', async function(req,res){
 });
 
 // Faltan testear los posts y resolver los archivos
-router.post('/editTicket', async function(req,res){
+router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   console.log(req.body);
   const ticket = await Ticket.update(
     {
@@ -253,12 +253,14 @@ router.post('/editTicket', async function(req,res){
   res.redirect('/viewTicket?id=' + req.query.id);
 });
 
-router.get('/misTickets', async function(req,res){
+router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   
   res.render('misTickets', {})
 });
 
-router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();},async function(req,res){
+router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  const status = req.body.status;
+  const id = req.query.id;
   const ticket = await Ticket.update(
     { status: req.body.status },
     { where: { id: req.query.id } }
@@ -269,7 +271,7 @@ router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; nex
 });
 
 // Shaar
-router.get('/viewTicket', async function(req,res){
+router.get('/viewTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { 
     include: [ User, Department ], 
     raw: true 
@@ -277,7 +279,7 @@ router.get('/viewTicket', async function(req,res){
   res.render('viewTicket', { ticket });
 });
 
-router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, async function(req,res){
+router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const cancelados = await Ticket.findAll({
     where: {
       status: 0
