@@ -16,20 +16,19 @@ function verifyToken(req,res,next) {
                 console.log('Your token is invalid, sending you to login')
                 console.log(err)
                 return res.redirect('/login')
-            }
-            else {
+            } else {
                 // Checking to see if user has permission to access this page
                 if (req.adminsOnly) {
                     if (data.isAdministrator) {
+                        req.isAdmin = true;
                         req.userId = data.id;
                         next();
-                    }
-                    else {
+                    } else {
                         console.log('You cannot access this page');
                         return res.redirect('/');
                     }
-                }
-                else {
+                } else {
+                    req.isAdmin = false;
                     req.userId = data.id;
                     next();
                 }
