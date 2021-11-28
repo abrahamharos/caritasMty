@@ -38,6 +38,19 @@
                     <label class="form-label" for="department">Seleccione el departamento</label>
                   </div>
 
+                  <div class="form-outline form-white mb-4">
+                    <select id="typeUser" name="typeUser" class="form-control">
+                        <% if (user.typeUser == "user") { %>
+                          <option selected value="user">Usuario</option>
+                          <option value="admin">Administrador</option>
+                        <% } else { %> 
+                          <option value="user">Usuario</option>
+                          <option selected value="admin">Administrador</option>
+                        <% } %> 
+                    </select>
+                    <label class="form-label" for="typeUser">Seleccione el rol</label>
+                  </div>
+
               <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar cambios</button>
             </form>
           </div>

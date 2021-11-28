@@ -184,6 +184,7 @@ router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; nex
     name: req.body.name,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password,10),
+    typeUser: req.body.typeUser,
     departmentId: req.body.departmentId
   }).then(function(){
     res.redirect('/users')
