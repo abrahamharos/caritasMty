@@ -8,7 +8,7 @@
             <div class="card-body p-5">
 
               <p class="h1 mb-5">Crear nuevo ticket</p>
-              <form action="/crearTicket" method="POST">
+              <form action="/crearTicket" enctype="multipart/form-data" method="POST">
                 <div class="form-group">
                   <label for="subject">Asunto</label>
                   <input type="text" class="form-control" name="subject" id="subject" placeholder="Ejemplo: Mouse roto" required>

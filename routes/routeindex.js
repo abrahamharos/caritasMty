@@ -3,6 +3,7 @@ const express = require('express');
 const { Parser } = require('json2csv');
 const router = express.Router();
 const { sequelize, Ticket, User, Department } = require('../db')
+const multer  = require('multer')
 
 /* IMPORTANT: about routes
   In each route, you have to include an anonymous middleware function that 
@@ -73,7 +74,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/index');
 const jwtSecret = db.jwtSecret;
-const verify = require("./verifyAccess")
+const verify = require("./verifyAccess");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({ storage: storage });
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
@@ -216,16 +227,17 @@ router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next
 });
 
 // Falta resolver los archivos
-router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+router.post('/crearTicket', upload.single('evidence'), function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.create({
     subject: req.body.subject,
     userId: req.userId,
     departmentId: req.body.departmentId,
     description: req.body.description,
-    evidence: req.body.evidence,
+    evidence: null,
     priority: req.body.priority,
     status: 1,
   })
+  console.log(req.file, req.body)
   res.redirect('/viewTicket?id=' + ticket.id)
 });
 
