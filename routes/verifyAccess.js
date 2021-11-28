@@ -28,7 +28,9 @@ function verifyToken(req,res,next) {
                 }
                 else {console.log("You're clear"); next()};
             }
+            console.log(data.id)
         })
+        
     }
 }
 

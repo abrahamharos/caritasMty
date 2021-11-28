@@ -266,6 +266,7 @@ router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next
 });
 
 router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){
+  
   res.render('misTickets', {})
 });
 
