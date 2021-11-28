@@ -260,7 +260,7 @@ router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next(
     raw: true
   })
   console.log(tickets)
-  res.render('misTickets', {})
+  res.render('misTickets', { tickets })
 });
 
 router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -271,8 +271,6 @@ router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; nex
     { where: { id: req.query.id } }
   )
   res.redirect('/viewTickets')
-
-  
 });
 
 // Shaar
