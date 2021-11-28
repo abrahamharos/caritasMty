@@ -7,27 +7,43 @@
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
           <div class="card-body p-5">
 
-            <p class="h1 mb-5">Ticket ###</p>
-            <p class="h2 mb-3">Asunto</p>
-            <p class="h4 mb-3"><b>Fecha: </b>26-11-2021</p>
-            <p class="h4 mb-3"><b>Prioridad: </b>0</p>
-            <p class="h4 mb-3"><b>Estado: </b><span class="badge badge-warning">Pendiente</span></p>
-            <p class="h4 mb-3"><b>Departamento asignado: </b>departamento 0</p>
-            <p class="h4 mb-5"><b>Nombre empleado: </b>Nombre</p>
+            <p class="h1 mb-5">Ticket #<%= ticket.id %></p>
+            <p class="h2 mb-3"><%= ticket.subject %></p>
+            <p class="h4 mb-3"><b>Fecha: </b><%= ticket.date %></p>
+            <p class="h4 mb-3"><b>Prioridad: </b><%= ticket.priority %></p>
+            <p class="h4 mb-3"><b>Estado: </b>
+              <% if (ticket.status == 0) { %>
+                <span class="badge badge-danger">Cancelado</span>
+              <% } else if (ticket.status == 1) { %>
+                <span class="badge badge-warning">Pendiente</span>
+              <% } else if (ticket.status == 2) { %>
+                <span class="badge badge-primary">En progreso</span>
+              <% } else { %>
+                <span class="badge badge-success">Completado</span>
+              <% } %>
+            </p>
+            <p class="h4 mb-3"><b>Departamento asignado: </b><%= ticket['department.name'] %></p>
+            <p class="h4 mb-5"><b>Nombre empleado: </b><%= ticket['user.name'] %></p>
             <p><b>Descripción:</b></p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat quae voluptatem commodi, inventore optio assumenda et consectetur molestias earum? Illo ut quaerat neque odio ipsa sint consectetur necessitatibus repellendus earum.</p>
+            <p><%= ticket.description %></p>
             <p><b>Evidencia:</b></p>
-            <p>TODO: Show evidence images</p>
+            <p>
+              <% if (ticket.evidence) { %>
+                <%= ticket.evidence %>
+              <% } else { %>
+                No hay evidencia
+              <% } %>
+            </p>
             <hr class="my-5">
             <p class="h4 mb-4">Cambiar estado</p>
             <form action="/updateStatus" method="POST">
                 <div class="form-outline form-white mb-4">
                     <label class="form-label" for="status">Seleccione el estado</label>
                     <select id="status" class="form-control">
-                      <option value="0">Pendiente</option>
-                      <option value="1">En progreso</option>
-                      <option value="2">Completado</option>
-                      <option value="3">Cancelado</option>
+                      <option value="0">Cancelado</option>
+                      <option value="1">Pendiente</option>
+                      <option value="2">En progreso</option>
+                      <option value="3">Completado</option>
                     </select>
                   </div>
                   <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
