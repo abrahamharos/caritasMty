@@ -8,7 +8,6 @@ const { sequelize, Ticket, User, Department } = require('../db')
   tells the "verify" function if the page is meant only for admins or not. You 
   also have to call "verify" to check if the user's token is still valid.
   Example route:
-
   router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
     console.log('Hello, this is a test page')
   });
@@ -68,6 +67,7 @@ await Ticket.update({ subject: "new subject" }, {
 
 // EDUARDO
 
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/index');
@@ -76,8 +76,7 @@ const verify = require("./verifyAccess")
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  const depts = await Department.findAll({ raw: true });
-  res.render('crearTicket', { depts })
+  res.render('home', {})
 });
 
 router.get('/logout', (req,res)=> {
@@ -204,24 +203,37 @@ router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; ne
 });
 
 // Mau 
+
+
+router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify,async function(req,res){
+  
+  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
+  console.log(req.body.subject);
+  const ticket = await Ticket.create({
+    userId: 1,
+    date: new Date(),
+    subject: req.body.subject,
+    userId: req.body.userId,
+    departmentId: req.body.departmentId,
+    description: req.body.description,
+    evidence: req.body.evidence,
+    priority: req.body.priority
+  })
+  .then(function(ticket){
+    res.redirect('/crearTicket')
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+});
+
+
 router.get('/crearTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
   res.render('crearTicket', { depts })
 });
 
-router.post('/crearTicket', async function(req,res){
-  // const ticket = await Ticket.create({
-  //   userId: 1,
-  //   subject: req.body.subject,
-  //   userId: req.body.userId,
-  //   departmentId: req.body.departmentId,
-  //   description: req.body.description,
-  //   evidence: req.body.evidence,
-  //   priority: req.body.priority
-  // })
-
-  res.redirect('/crearTicket')
-});
 
 router.get('/editTicket', async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { 
@@ -231,9 +243,10 @@ router.get('/editTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
   console.log(ticket, depts);
   res.render('editTicket', { ticket, depts });
+
 });
 
-router.post('/editTicket', async function(req,res){
+router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){
   const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
   const ticket = await Ticket.update(
     {
@@ -256,20 +269,34 @@ router.post('/editTicket', async function(req,res){
   
 });
 
-router.get('/misTickets', async function(req,res){
+router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){
+  
   res.render('misTickets', {})
 });
 
-router.post('/updateStatus', async function(req,res){
+router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();},async function(req,res){
+  const status = req.body.status;
+  const id = req.query.id;
   const ticket = await Ticket.update(
     {
       status: req.body.status
     },
     {
-      where: { id: req.query.id }
+      where: {id: req.query.id}
     }
   )
-  res.redirect('/viewTicket?id=' + req.query.id);
+  .then(function(ticket){
+   
+    res.render('viewTickets.ejs', {
+      success: true,
+      Ticket: ticket
+    })
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+  
 });
 
 // Shaar
@@ -278,6 +305,7 @@ router.get('/viewTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
+  console.log(ticket);
   res.render('viewTicket', { ticket });
 });
 

@@ -32,7 +32,9 @@ function verifyToken(req,res,next) {
                     next();
                 }
             }
+            console.log(data.id)
         })
+        
     }
 }
 
