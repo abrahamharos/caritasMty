@@ -144,28 +144,15 @@ router.get('/misTickets', async function(req,res){
 });
 
 router.post('/updateStatus', async function(req,res){
-  const status = req.body.status;
-  const id = req.query.id;
   const ticket = await Ticket.update(
     {
       status: req.body.status
     },
     {
-      where: {id: req.query.id}
+      where: { id: req.query.id }
     }
   )
-  .then(function(ticket){
-   
-    res.render('viewTickets.ejs', {
-      success: true,
-      Ticket: ticket
-    })
-    })
-  .catch(function(err){
-    console.log(err)
-  })
-
-  
+  res.redirect('/viewTicket?id=' + req.query.id);
 });
 
 // Shaar
