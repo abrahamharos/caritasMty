@@ -18,13 +18,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto</td>
-                            <td class="text-center"><span class="badge badge-warning">Pendiente</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
+                        <% pendientes.forEach( ticket => { %>
+                            <tr>
+                                <th scope="row"><%= ticket.id %></th>
+                                <td><%= ticket.date.toLocaleDateString('es-MX') %></td>
+                                <td><%= ticket.subject %></td>
+                                <td class="text-center"><span class="badge badge-warning">Pendiente</span></td>
+                                <td class="text-center"><a href="/viewTicket?id=<%= ticket.id %>"><i class="far fa-eye"></i></a></td>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             </div>
@@ -42,20 +44,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto</td>
-                            <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto</td>
-                            <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
+                        <% enProgreso.forEach( ticket => { %>
+                            <tr>
+                                <th scope="row"><%= ticket.id %></th>
+                                <td><%= ticket.date.toLocaleDateString('es-MX') %></td>
+                                <td><%= ticket.subject %></td>
+                                <td class="text-center"><span class="badge badge-primary">En progreso</span></td>
+                                <td class="text-center"><a href="/viewTicket?id=<%= ticket.id %>"><i class="far fa-eye"></i></a></td>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             </div>
@@ -73,13 +70,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto</td>
-                            <td class="text-center"><span class="badge badge-danger">Cancelado</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
+                        <% cancelados.forEach( ticket => { %>
+                            <tr>
+                                <th scope="row"><%= ticket.id %></th>
+                                <td><%= ticket.date.toLocaleDateString('es-MX') %></td>
+                                <td><%= ticket.subject %></td>
+                                <td class="text-center"><span class="badge badge-danger">Cancelado</span></td>
+                                <td class="text-center"><a href="/viewTicket?id=<%= ticket.id %>"><i class="far fa-eye"></i></a></td>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             </div>
@@ -97,27 +96,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto</td>
-                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto 2</td>
-                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>26-11-2021</td>
-                            <td>Mouse roto 3</td>
-                            <td class="text-center"><span class="badge badge-success">Completado</span></td>
-                            <td class="text-center"><a href="/viewTicket?id=0"><i class="far fa-eye"></i></a></td>
-                        </tr>
+                        <% completados.forEach( ticket => { %>
+                            <tr>
+                                <th scope="row"><%= ticket.id %></th>
+                                <td><%= ticket.date.toLocaleDateString('es-MX') %></td>
+                                <td><%= ticket.subject %></td>
+                                <td class="text-center"><span class="badge badge-success">Completado</span></td>
+                                <td class="text-center"><a href="/viewTicket?id=<%= ticket.id %>"><i class="far fa-eye"></i></a></td>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             </div>
