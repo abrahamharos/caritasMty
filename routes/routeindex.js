@@ -212,30 +212,23 @@ router.get('/deleteUser/:id', async function(req,res){
 
 // Mau 
 router.get('/crearTicket', async function(req,res){
-  res.render('crearTicket', {})
+  const depts = await Department.findAll({ raw: true });
+  console.log("pene", depts);
+  res.render('crearTicket', { depts })
 });
 
 router.post('/crearTicket', async function(req,res){
-  
-  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
-  console.log(req.body.subject);
-  const ticket = await Ticket.create({
-    userId: 1,
-    date: new Date(),
-    subject: req.body.subject,
-    userId: req.body.userId,
-    departmentId: req.body.departmentId,
-    description: req.body.description,
-    evidence: req.body.evidence,
-    priority: req.body.priority
-  })
-  .then(function(ticket){
-    res.redirect('/crearTicket')
-    })
-  .catch(function(err){
-    console.log(err)
-  })
+  // const ticket = await Ticket.create({
+  //   userId: 1,
+  //   subject: req.body.subject,
+  //   userId: req.body.userId,
+  //   departmentId: req.body.departmentId,
+  //   description: req.body.description,
+  //   evidence: req.body.evidence,
+  //   priority: req.body.priority
+  // })
 
+  res.redirect('/crearTicket')
 });
 
 router.get('/editTicket', async function(req,res){
