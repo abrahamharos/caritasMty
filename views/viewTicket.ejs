@@ -9,7 +9,7 @@
 
             <p class="h1 mb-5">Ticket #<%= ticket.id %></p>
             <p class="h2 mb-3"><%= ticket.subject %></p>
-            <p class="h4 mb-3"><b>Fecha: </b><%= ticket.date %></p>
+            <p class="h4 mb-3"><b>Fecha: </b><%= ticket.date.toLocaleDateString('es-MX') %></p>
             <p class="h4 mb-3"><b>Prioridad: </b><%= ticket.priority %></p>
             <p class="h4 mb-3"><b>Estado: </b>
               <% if (ticket.status == 0) { %>
