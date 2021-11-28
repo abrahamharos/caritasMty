@@ -18,6 +18,8 @@ Department.hasMany(Ticket, {
     name: 'departmentId',
     allowNull: false,
   },
+  onDelete: 'cascade',
+  hooks: true
 });
 
 Ticket.belongsTo(Department, {
@@ -32,6 +34,8 @@ Department.hasMany(User, {
     name: 'departmentId',
     allowNull: false,
   },
+  onDelete: 'cascade',
+  hooks: true
 });
 
 User.belongsTo(Department, {
@@ -46,6 +50,8 @@ User.hasMany(Ticket, {
     name: 'userId',
     allowNull: false,
   },
+  onDelete: 'cascade',
+  hooks: true
 });
 
 Ticket.belongsTo(User, {
