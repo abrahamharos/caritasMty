@@ -23,7 +23,6 @@
 
     <div class="container">
       <p class="h1">Lista de departamentos</p>
-      <!-- TODO: GET DEPARTMENTS-->
       <table class="table table-striped">
         <thead>
           <tr>
@@ -35,7 +34,7 @@
         <tbody>
           <% for (var i = 0; i < departmentList.length; i++) { %>
             <tr>
-              <th scope="row">1</th>
+              <th scope="row"><%= i+1 %></th>
               <td><%= departmentList[i].name %></td>
               <td class="text-center"><a href="/deleteDepartment/<%= departmentList[i].id %>"><i class="far fa-trash-alt"></i></a></td>
             </tr>

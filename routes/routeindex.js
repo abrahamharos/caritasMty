@@ -79,26 +79,26 @@ router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verif
   res.render('home', {})
 });
 
-// WORKS
+router.get('/logout', (req,res)=> {
+  res.clearCookie("token")
+  res.redirect("/")
+  })
+
 router.get('/login', async function(req,res){
+  res.clearCookie("token");
   res.render('login', {})
 });
 
 router.post('/login', async function(req,res){  
-
-  // Validar si el usuario existe
   const user = User.findAll({
     where: { email: req.body.email }
     }).then(async function(users) {
       if (!users){
         return res.status(404).send("The user does not exist")
       }
-
-      // Si el usuario existe, vamos a generar un token de JWT
       else {
         var valid = await bcrypt.compare(req.body.password,users[0].dataValues.password) 
       
-        // Si la contraseña es correcta generamos un JWT
         if (valid) {
           var token;
           if (users[0].dataValues.typeUser == "admin") {
@@ -119,13 +119,11 @@ router.post('/login', async function(req,res){
   })
 });
 
-// WORKS
 router.get('/register', async function(req,res){
   var departmentList = await Department.findAll();
   res.render('register', {departmentList})
 });
 
-// WORKS
 router.post('/register', async function(req,res){
   req.body.typeUser = 'user';
   console.log(req.body); 
@@ -140,80 +138,72 @@ router.post('/register', async function(req,res){
   });
 });
 
-// WORKS
 router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-// router.get('/departments', async function(req,res){
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  };
-
   const departmentList = await Department.findAll();
   res.render('departments', {departmentList})
 });
 
-// WORKS
-router.post('/createDepartment', async function(req,res){
-  await Department.create(req.body).then(function(user) {
-    console.log('\nCreated Department:', user.get({ plain: true}))});
-  
-  var departmentList = await Department.findAll();
-  res.render('departments', {departmentList})
+router.post('/createDepartment', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  await Department.create(req.body)
+  .then(function(){
+    res.redirect('/departments')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
-// WORKS
-router.get('/deleteDepartment/:name', async function(req,res){
+router.get('/deleteDepartment/:name', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const departmentToDelete = await Department.findByPk(req.params.name);
-  await departmentToDelete.destroy();
-
-  var departmentList = await Department.findAll();
-  res.render('departments', {departmentList})
+  await departmentToDelete.destroy()
+  .then(function(){
+    res.redirect('/departments')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
-// WORKS
-// router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  router.get('/users', async function(req,res){    
+router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){  
   var userList = await User.findAll();
-  console.log(userList);
   res.render('users', {userList})
 });
 
-// router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-router.get('/editUser/:id', async function(req,res){
+router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   var departmentList = await Department.findAll();
-  res.render('editUser', {departmentList})
+  const uid = req.params.id;
+  res.render('editUser', {departmentList, uid})
 });
 
-router.post('/editUser/:id', async function(req,res){
-  console.log(req.body);
-  const userToEdit = await User.findAll(req.body.id);
-  User.findAll({
-    where: { email: req.body.email }
-    })
+router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  const userToEdit = await User.findByPk(req.params.id);
+
   await userToEdit.update({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: bcrypt.hashSync(req.body.password,10),
+    departmentId: req.body.departmentId
+  }).then(function(){
+    res.redirect('/users')
+  })
+  .catch(function(err){
+    console.log(err)
   });
-
-  res.render('users', {})
 });
 
-// WORKS
-router.get('/deleteUser/:id', async function(req,res){
+router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
-  await userToDelete.destroy();
-
-  var userList = await User.findAll();
-  res.render('users', {userList})
+  await userToDelete.destroy()
+  .then(function(){
+    res.redirect('/users')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
 // Mau 
-router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, async function(req,res){
-  res.render('crearTicket', {})
-});
+
 
 router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify,async function(req,res){
   
@@ -238,8 +228,22 @@ router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; nex
 
 });
 
-router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, async function(req,res){
-  res.render('editTicket', {})
+
+router.get('/crearTicket', async function(req,res){
+  const depts = await Department.findAll({ raw: true });
+  res.render('crearTicket', { depts })
+});
+
+
+router.get('/editTicket', async function(req,res){
+  const ticket = await Ticket.findByPk(req.query.id, { 
+    include: [ User, Department ], 
+    raw: true 
+  });
+  const depts = await Department.findAll({ raw: true });
+  console.log(ticket, depts);
+  res.render('editTicket', { ticket, depts });
+
 });
 
 router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();},async function(req,res){

@@ -20,13 +20,17 @@ function verifyToken(req,res,next) {
             else {
                 // Checking to see if user has permission to access this page
                 if (req.adminsOnly) {
-                    if (data.isAdministrator) next();
+                    if (data.isAdministrator) {
+                        next();
+                    }
                     else {
                         console.log('You cannot access this page');
                         return res.redirect('/');
                     }
                 }
-                else {console.log("You're clear"); next()};
+                else {
+                    next();
+                }
             }
             console.log(data.id)
         })
