@@ -232,7 +232,12 @@ router.post('/crearTicket', async function(req,res){
 });
 
 router.get('/editTicket', async function(req,res){
-  res.render('editTicket', {})
+  const ticket = await Ticket.findByPk(req.query.id, { 
+    include: [ User, Department ], 
+    raw: true 
+  });
+  console.log(ticket);
+  res.render('editTicket', { ticket });
 });
 
 router.post('/editTicket', async function(req,res){
