@@ -140,52 +140,51 @@ router.post('/register', async function(req,res){
   });
 });
 
-// WORKS
+// GOOD
 router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
 // router.get('/departments', async function(req,res){
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  };
-
   const departmentList = await Department.findAll();
   res.render('departments', {departmentList})
 });
 
-// WORKS
+// GOOD
 router.post('/createDepartment', async function(req,res){
-  await Department.create(req.body).then(function(user) {
-    console.log('\nCreated Department:', user.get({ plain: true}))});
-  
-  var departmentList = await Department.findAll();
-  res.render('departments', {departmentList})
+  await Department.create(req.body)
+  .then(function(){
+    res.redirect('/departments')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
-// WORKS
+// GOOD
 router.get('/deleteDepartment/:name', async function(req,res){
   const departmentToDelete = await Department.findByPk(req.params.name);
-  await departmentToDelete.destroy();
-
-  var departmentList = await Department.findAll();
-  res.render('departments', {departmentList})
+  await departmentToDelete.destroy()
+  .then(function(){
+    res.redirect('/departments')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
-// WORKS
+// GOOD
 // router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
   router.get('/users', async function(req,res){    
   var userList = await User.findAll();
   res.render('users', {userList})
 });
 
-// router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+// GOOD
 router.get('/editUser/:id', async function(req,res){
   var departmentList = await Department.findAll();
   const uid = req.params.id;
   res.render('editUser', {departmentList, uid})
 });
 
+// GOOD
 router.post('/editUser/:id', async function(req,res){
   const userToEdit = await User.findByPk(req.params.id);
 
@@ -194,24 +193,24 @@ router.post('/editUser/:id', async function(req,res){
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password,10),
     departmentId: req.body.departmentId
-  }).then(function(editedUser){
+  }).then(function(){
     res.redirect('/users')
   })
   .catch(function(err){
     console.log(err)
   });
-
-  //var userList = await User.findAll();
-  //res.render('users', {userList})
 });
 
-// WORKS
+// GOOD 
 router.get('/deleteUser/:id', async function(req,res){
   const userToDelete = await User.findByPk(req.params.id);
-  await userToDelete.destroy();
-
-  var userList = await User.findAll();
-  res.render('users', {userList})
+  await userToDelete.destroy()
+  .then(function(){
+    res.redirect('/users')
+  })
+  .catch(function(err){
+    console.log(err)
+  });
 });
 
 // Mau 
