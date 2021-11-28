@@ -264,7 +264,7 @@ router.post('/editTicket', upload.single('evidence'), function (req,res,next) {r
   const ticket = await Ticket.update(
     {
       subject: req.body.subject,
-      departmentId: req.body.departmentId,
+      departmentId: req.body.department,
       description: req.body.description,
       evidence: req.file ? req.file.originalname : req.body.currFilename,
       priority: req.body.priority
