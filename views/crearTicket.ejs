@@ -17,7 +17,11 @@
                   <label for="department">Departamento correspondiente</label>
                   <select id="department" class="form-control">
                     <% depts.forEach( dept => { %>
-                      <option value="<%= dept.id %>"><%= dept.name %></option>
+                      <% if (dept.id == ticket.departmentId) { %>
+                        <option selected="selected" value="<%= dept.id %>"><%= dept.name %></option>
+                      <% } else { %>
+                        <option value="<%= dept.id %>"><%= dept.name %></option>
+                      <% } %>
                     <% }); %>
                   </select>
                 </div>

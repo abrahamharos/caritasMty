@@ -236,8 +236,9 @@ router.get('/editTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
-  console.log(ticket);
-  res.render('editTicket', { ticket });
+  const depts = await Department.findAll({ raw: true });
+  console.log(ticket, depts);
+  res.render('editTicket', { ticket, depts });
 });
 
 router.post('/editTicket', async function(req,res){
