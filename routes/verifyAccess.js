@@ -20,7 +20,7 @@ function verifyToken(req,res,next) {
                 // Checking to see if user has permission to access this page
                 if (req.adminsOnly) {
                     if (data.isAdministrator) {
-                        req.isAdmin = true;
+                        req.isAdmin = data.isAdministrator;
                         req.userId = data.id;
                         next();
                     } else {
@@ -28,7 +28,7 @@ function verifyToken(req,res,next) {
                         return res.redirect('/');
                     }
                 } else {
-                    req.isAdmin = false;
+                    req.isAdmin = data.isAdministrator;
                     req.userId = data.id;
                     next();
                 }
