@@ -111,12 +111,35 @@ router.get('/viewTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
-  console.log(ticket);
   res.render('viewTicket', { ticket });
 });
 
 router.get('/viewTickets', async function(req,res){
-  res.render('viewTickets', {})
+  const cancelados = await Ticket.findAll({
+    where: {
+      status: 0
+    },
+    raw: true
+  });
+  const pendientes = await Ticket.findAll({
+    where: {
+      status: 1
+    },
+    raw: true
+  });
+  const enProgreso = await Ticket.findAll({
+    where: {
+      status: 2
+    },
+    raw: true
+  });
+  const completados = await Ticket.findAll({
+    where: {
+      status: 3
+    },
+    raw: true
+  });
+  res.render('viewTickets', { cancelados, pendientes, enProgreso, completados });
 });
 
 module.exports = router;
