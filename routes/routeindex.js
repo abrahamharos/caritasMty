@@ -204,31 +204,6 @@ router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; ne
 
 // Mau 
 
-
-router.post('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify,async function(req,res){
-  
-  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
-  console.log(req.body.subject);
-  const ticket = await Ticket.create({
-    userId: 1,
-    date: new Date(),
-    subject: req.body.subject,
-    userId: req.body.userId,
-    departmentId: req.body.departmentId,
-    description: req.body.description,
-    evidence: req.body.evidence,
-    priority: req.body.priority
-  })
-  .then(function(ticket){
-    res.redirect('/crearTicket')
-    })
-  .catch(function(err){
-    console.log(err)
-  })
-
-});
-
-
 router.get('/crearTicket', async function(req,res){
   const depts = await Department.findAll({ raw: true });
   res.render('crearTicket', { depts })
@@ -256,13 +231,13 @@ router.get('/editTicket', async function(req,res){
     raw: true 
   });
   const depts = await Department.findAll({ raw: true });
-  console.log(ticket, depts);
   res.render('editTicket', { ticket, depts });
 
 });
 
 // Faltan testear los posts y resolver los archivos
 router.post('/editTicket', async function(req,res){
+  console.log(req.body);
   const ticket = await Ticket.update(
     {
       subject: req.body.subject,
@@ -271,17 +246,11 @@ router.post('/editTicket', async function(req,res){
       evidence: req.body.evidence,
       priority: req.body.priority},
     {
-      where: {id: req.query.id}
+      where: { id: req.query.id }
     }
   )
-  .then(function(ticket){
-    
-    res.redirect('/')
-    })
-  .catch(function(err){
-    console.log(err)
-  })
   
+  res.redirect('/viewTicket?id=' + req.query.id);
 });
 
 router.get('/misTickets', async function(req,res){
@@ -305,7 +274,6 @@ router.get('/viewTicket', async function(req,res){
     include: [ User, Department ], 
     raw: true 
   });
-  console.log(ticket);
   res.render('viewTicket', { ticket });
 });
 
