@@ -3,6 +3,17 @@ const express = require('express');
 const router = express.Router();
 const { sequelize, Ticket, User, Department } = require('../db')
 
+/* IMPORTANT: about routes
+  In each route, you have to include an anonymous middleware function that 
+  tells the "verify" function if the page is meant only for admins or not. You 
+  also have to call "verify" to check if the user's token is still valid.
+  Example route:
+
+  router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+    console.log('Hello, this is a test page')
+  });
+*/
+
 // EJEMPLOS DE QUERIES
 
 /*
@@ -57,17 +68,6 @@ await Ticket.update({ subject: "new subject" }, {
 
 // EDUARDO
 
-/* IMPORTANT: about routes
-  In each route, you have to include an anonymous middleware function that 
-  tells the "verify" function if the page is meant only for admins or not. You 
-  also have to call "verify" to check if the user's token is still valid.
-  Example route:
-
-  router.get('/teststuff', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-    console.log('Hello, this is a test page')
-  });
-*/
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/index');
@@ -79,6 +79,7 @@ router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verif
   res.render('crearTicket', {})
 });
 
+// WORKS
 router.get('/login', async function(req,res){
   res.render('login', {})
 });
@@ -100,7 +101,7 @@ router.post('/login', async function(req,res){
         // Si la contraseña es correcta generamos un JWT
         if (valid) {
           var token;
-          if (users[0].dataValues.role == "Administrator") {
+          if (users[0].dataValues.typeUser == "admin") {
             token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, jwtSecret, {expiresIn: "1h"})
           }
           else {
@@ -124,8 +125,9 @@ router.get('/register', async function(req,res){
   res.render('register', {departmentList})
 });
 
-// WORKS, falta que no es admin
+// WORKS
 router.post('/register', async function(req,res){
+  req.body.typeUser = 'user';
   console.log(req.body); 
 
   const newUser = await User.create(req.body)
@@ -133,13 +135,14 @@ router.post('/register', async function(req,res){
     user.update({
       password: bcrypt.hashSync(user.password,10)
     })
-    res.redirect("/")
+    console.log(user);
+    res.redirect('login');
   });
 });
 
 // WORKS
-// router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-router.get('/departments', async function(req,res){
+router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+// router.get('/departments', async function(req,res){
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
@@ -171,7 +174,7 @@ router.get('/deleteDepartment/:name', async function(req,res){
 
 // WORKS
 // router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  router.get('/users', async function(req,res){
+  router.get('/users', async function(req,res){    
   var userList = await User.findAll();
   console.log(userList);
   res.render('users', {userList})

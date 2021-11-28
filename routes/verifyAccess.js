@@ -26,7 +26,7 @@ function verifyToken(req,res,next) {
                         return res.redirect('/');
                     }
                 }
-                else next();
+                else {console.log("You're clear"); next()};
             }
         })
     }
