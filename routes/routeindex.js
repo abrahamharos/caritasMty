@@ -1,5 +1,6 @@
 const { render } = require('ejs');
 const express = require('express');
+const { Parser } = require('json2csv');
 const router = express.Router();
 const { sequelize, Ticket, User, Department } = require('../db')
 
@@ -105,8 +106,7 @@ router.post('/login', async function(req,res){
           let token;
           if (users[0].dataValues.typeUser == "admin") {
             token = jwt.sign({id:users[0].dataValues.id, isAdministrator: true}, jwtSecret, {expiresIn: "1h"})
-          }
-          else {
+          } else {
             token = jwt.sign({id:users[0].dataValues.id, isAdministrator: false}, jwtSecret, {expiresIn: "1h"})
           }
           res.cookie("token", token, {httpOnly:true})
@@ -127,14 +127,12 @@ router.get('/register', async function(req,res){
 
 router.post('/register', async function(req,res){
   req.body.typeUser = 'user';
-  console.log(req.body); 
 
   const newUser = await User.create(req.body)
   .then(function(user) {
     user.update({
       password: bcrypt.hashSync(user.password,10)
     })
-    console.log(user);
     res.redirect('login');
   });
 });
@@ -177,7 +175,6 @@ router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next
   const isAdmin = req.isAdmin;
   const user = await User.findByPk(req.params.id, { raw: true });
   const uid = req.params.id;
-  console.log(user)
   res.render('editUser', { user, departmentList, uid, isAdmin })
 });
 
@@ -246,7 +243,6 @@ router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next(
 
 // Falta resolver los archivos
 router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  console.log(req.body);
   const ticket = await Ticket.update(
     {
       subject: req.body.subject,
@@ -327,6 +323,18 @@ router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next(
   });
   const isAdmin = req.isAdmin;
   res.render('viewTickets', { cancelados, pendientes, enProgreso, completados, isAdmin });
+});
+
+router.get('/report', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  const tickets = await Ticket.findAll({ 
+    include: [ User, Department ], 
+    raw: true 
+  });
+  const json2csvParser = new Parser();
+  const csv = json2csvParser.parse(tickets);
+
+  res.attachment('reporte.csv');
+  res.status(200).send(csv);
 });
 
 module.exports = router;
