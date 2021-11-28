@@ -21,6 +21,7 @@ function verifyToken(req,res,next) {
                 // Checking to see if user has permission to access this page
                 if (req.adminsOnly) {
                     if (data.isAdministrator) {
+                        req.userId = data.id;
                         next();
                     }
                     else {
@@ -29,12 +30,11 @@ function verifyToken(req,res,next) {
                     }
                 }
                 else {
+                    req.userId = data.id;
                     next();
                 }
             }
-            console.log(data.id)
         })
-        
     }
 }
 
