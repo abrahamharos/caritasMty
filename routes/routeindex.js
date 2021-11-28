@@ -76,7 +76,8 @@ const verify = require("./verifyAccess")
 
 
 router.get('/', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
-  res.render('home', {})
+  const isAdmin = req.isAdmin;
+  res.render('home', { isAdmin })
 });
 
 router.get('/logout', (req,res)=> {
@@ -120,8 +121,8 @@ router.post('/login', async function(req,res){
 });
 
 router.get('/register', async function(req,res){
-  let departmentList = await Department.findAll();
-  res.render('register', {departmentList})
+  const departmentList = await Department.findAll();
+  res.render('register', { departmentList })
 });
 
 router.post('/register', async function(req,res){
@@ -139,8 +140,9 @@ router.post('/register', async function(req,res){
 });
 
 router.get('/departments', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
+  const isAdmin = req.isAdmin;
   const departmentList = await Department.findAll();
-  res.render('departments', {departmentList})
+  res.render('departments', { departmentList, isAdmin })
 });
 
 router.post('/createDepartment', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -165,16 +167,18 @@ router.get('/deleteDepartment/:name', function (req,res,next) {req.adminsOnly = 
 });
 
 router.get('/users', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){  
-  let userList = await User.findAll();
-  res.render('users', {userList})
+  const userList = await User.findAll();
+  const isAdmin = req.isAdmin;
+  res.render('users', { userList, isAdmin })
 });
 
 router.get('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
-  let departmentList = await Department.findAll();
+  const departmentList = await Department.findAll();
+  const isAdmin = req.isAdmin;
   const user = await User.findByPk(req.params.id, { raw: true });
   const uid = req.params.id;
   console.log(user)
-  res.render('editUser', { user, departmentList, uid })
+  res.render('editUser', { user, departmentList, uid, isAdmin })
 });
 
 router.post('/editUser/:id', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -210,7 +214,8 @@ router.get('/deleteUser/:id', function (req,res,next) {req.adminsOnly = true; ne
 // Falta resolver los archivos
 router.get('/crearTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const depts = await Department.findAll({ raw: true });
-  res.render('crearTicket', { depts })
+  const isAdmin = req.isAdmin;
+  res.render('crearTicket', { depts, isAdmin })
 });
 
 // Falta resolver los archivos
@@ -234,7 +239,8 @@ router.get('/editTicket', function (req,res,next) {req.adminsOnly = false; next(
     raw: true 
   });
   const depts = await Department.findAll({ raw: true });
-  res.render('editTicket', { ticket, depts });
+  const isAdmin = req.isAdmin;
+  res.render('editTicket', { ticket, depts, isAdmin });
 
 });
 
@@ -256,7 +262,8 @@ router.post('/editTicket', function (req,res,next) {req.adminsOnly = false; next
 
 router.get('/deleteTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
   const ticket = await Ticket.findByPk(req.query.id, { raw: true });
-  res.render('deleteTicket', { ticket });
+  const isAdmin = req.isAdmin;
+  res.render('deleteTicket', { ticket, isAdmin });
 });
 
 router.post('/deleteTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
@@ -267,11 +274,12 @@ router.post('/deleteTicket', function (req,res,next) {req.adminsOnly = false; ne
 });
 
 router.get('/misTickets', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+  const isAdmin = req.isAdmin;
   const tickets = await Ticket.findAll({
     where: { userId: req.userId },
     raw: true
   })
-  res.render('misTickets', { tickets })
+  res.render('misTickets', { tickets, isAdmin })
 });
 
 router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -284,11 +292,12 @@ router.post('/updateStatus', function (req,res,next) {req.adminsOnly = true; nex
 
 // Shaar
 router.get('/viewTicket', function (req,res,next) {req.adminsOnly = false; next();}, verify, async function(req,res){
+  const isAdmin = req.isAdmin;
   const ticket = await Ticket.findByPk(req.query.id, { 
     include: [ User, Department ], 
     raw: true 
   });
-  res.render('viewTicket', { ticket });
+  res.render('viewTicket', { ticket, isAdmin });
 });
 
 router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next();}, verify, async function(req,res){
@@ -316,7 +325,8 @@ router.get('/viewTickets', function (req,res,next) {req.adminsOnly = true; next(
     },
     raw: true
   });
-  res.render('viewTickets', { cancelados, pendientes, enProgreso, completados });
+  const isAdmin = req.isAdmin;
+  res.render('viewTickets', { cancelados, pendientes, enProgreso, completados, isAdmin });
 });
 
 module.exports = router;

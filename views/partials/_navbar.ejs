@@ -19,20 +19,22 @@
         <!-- Usuario normal -->
 
         <!-- Admin -->
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/viewTickets">Ver Tickets</a>
-        </li>
-        
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Administrar
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/departments">Departamentos</a>
-            <a class="dropdown-item" href="/users">Usuarios</a>
-            <a class="dropdown-item" href="/report">Exportar tickets a excel</a>
-          </div>
-        </li>
+        <% if (isAdmin) { %>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/viewTickets">Ver Tickets</a>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Administrar
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/departments">Departamentos</a>
+              <a class="dropdown-item" href="/users">Usuarios</a>
+              <a class="dropdown-item" href="/report">Exportar tickets a excel</a>
+            </div>
+          </li>
+        <% } %>  
         <!-- Admin -->
         <li>
           <a class="nav-link text-white" href="/logout">Cerrar sesión</a>

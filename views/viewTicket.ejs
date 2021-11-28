@@ -1,5 +1,5 @@
 <%- include ("./partials/_header") %>
-<%- include ("./partials/_navbar") %>
+<%- include ("./partials/_navbar", { isAdmin: isAdmin }) %>
 
 <div class="container py-5 mb-5">
     <div class="row d-flex justify-content-center align-items-center">
@@ -34,38 +34,40 @@
                 No hay evidencia
               <% } %>
             </p>
-            <hr class="my-5">
-            <p class="h4 mb-4">Cambiar estado</p>
-            <form action="/updateStatus?id=<%= ticket.id %>" method="POST">
-                <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="status">Seleccione el estado</label>
-                    <select id="status" class="form-control" name="status">
-                      <% if (ticket.status == 0) { %>
-                        <option selected="selected" value="0">Cancelado</option>
-                        <option value="1">Pendiente</option>
-                        <option value="2">En progreso</option>
-                        <option value="3">Completado</option>
-                      <% } else if (ticket.status == 1) { %>
-                        <option value="0">Cancelado</option>
-                        <option selected="selected" value="1">Pendiente</option>
-                        <option value="2">En progreso</option>
-                        <option value="3">Completado</option>
-                      <% } else if (ticket.status == 2) { %>
-                        <option value="0">Cancelado</option>
-                        <option value="1">Pendiente</option>
-                        <option selected="selected" value="2">En progreso</option>
-                        <option value="3">Completado</option>
-                      <% } else { %>
-                        <option value="0">Cancelado</option>
-                        <option value="1">Pendiente</option>
-                        <option value="2">En progreso</option>
-                        <option selected="selected" value="3">Completado</option>
-                      <% } %>
-                      
-                    </select>
-                  </div>
-                  <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
-            </form>
+            <% if (isAdmin) { %>
+              <hr class="my-5">
+              <p class="h4 mb-4">Cambiar estado</p>
+              <form action="/updateStatus?id=<%= ticket.id %>" method="POST">
+                  <div class="form-outline form-white mb-4">
+                      <label class="form-label" for="status">Seleccione el estado</label>
+                      <select id="status" class="form-control" name="status">
+                        <% if (ticket.status == 0) { %>
+                          <option selected="selected" value="0">Cancelado</option>
+                          <option value="1">Pendiente</option>
+                          <option value="2">En progreso</option>
+                          <option value="3">Completado</option>
+                        <% } else if (ticket.status == 1) { %>
+                          <option value="0">Cancelado</option>
+                          <option selected="selected" value="1">Pendiente</option>
+                          <option value="2">En progreso</option>
+                          <option value="3">Completado</option>
+                        <% } else if (ticket.status == 2) { %>
+                          <option value="0">Cancelado</option>
+                          <option value="1">Pendiente</option>
+                          <option selected="selected" value="2">En progreso</option>
+                          <option value="3">Completado</option>
+                        <% } else { %>
+                          <option value="0">Cancelado</option>
+                          <option value="1">Pendiente</option>
+                          <option value="2">En progreso</option>
+                          <option selected="selected" value="3">Completado</option>
+                        <% } %>
+                        
+                      </select>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Cambios</button>
+              </form>
+            <% } %>
           </div>
         </div>
       </div>
