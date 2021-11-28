@@ -89,12 +89,54 @@ router.get('/crearTicket', async function(req,res){
   res.render('crearTicket', {})
 });
 
+router.post('/crearTicket', async function(req,res){
+  
+  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
+  console.log(req.body.subject);
+  const ticket = await Ticket.create({
+    userId: 1,
+    date: new Date(),
+    subject: req.body.subject,
+    userId: req.body.userId,
+    departmentId: req.body.departmentId,
+    description: req.body.description,
+    evidence: req.body.evidence,
+    priority: req.body.priority
+  })
+  .then(function(ticket){
+    res.redirect('/crearTicket')
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+});
+
 router.get('/editTicket', async function(req,res){
   res.render('editTicket', {})
 });
 
 router.post('/editTicket', async function(req,res){
-  res.redirect('/')
+  const {subject, departmentId, description, evidence, priority, extras, status} = req.body;
+  const ticket = await Ticket.update(
+    {
+      subject: req.body.subject,
+      departmentId: req.body.departmentId,
+      description: req.body.description,
+      evidence: req.body.evidence,
+      priority: req.body.priority},
+    {
+      where: {id: req.query.id}
+    }
+  )
+  .then(function(ticket){
+    
+    res.redirect('/')
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+  
 });
 
 router.get('/misTickets', async function(req,res){
@@ -102,7 +144,28 @@ router.get('/misTickets', async function(req,res){
 });
 
 router.post('/updateStatus', async function(req,res){
-  res.redirect('/viewTickets')
+  const status = req.body.status;
+  const id = req.query.id;
+  const ticket = await Ticket.update(
+    {
+      status: req.body.status
+    },
+    {
+      where: {id: req.query.id}
+    }
+  )
+  .then(function(ticket){
+   
+    res.render('viewTickets.ejs', {
+      success: true,
+      Ticket: ticket
+    })
+    })
+  .catch(function(err){
+    console.log(err)
+  })
+
+  
 });
 
 // Shaar
